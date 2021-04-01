@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import NavBar from "./components/NavBar";
 import UsersList from "./components/UsersList";
 import User from "./components/User";
 
@@ -20,7 +19,6 @@ function App() {
 	return (
 		<ListProvider>
 			<BrowserRouter>
-				<NavBar />
 				<Switch>
 					<Route path="/users" exact={true}>
 						<UsersList />
