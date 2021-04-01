@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 
 from .models import db, User
 from .api.user_routes import user_routes
-# from .api.list_routes import list_routes
+from .api.list_routes import list_routes
 
 from .config import Config
 
@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
-# app.register_blueprint(list_routes, url_prefix='/lists')
+app.register_blueprint(list_routes, url_prefix='/lists')
 db.init_app(app)
 Migrate(app, db)
 

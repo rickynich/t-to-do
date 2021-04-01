@@ -9,7 +9,7 @@ def lists():
     lists = List.query.all()
     return {"lists": [list.to_dict() for list in lists]}
 
-@user_routes.route('/<int:id>')
+@list_routes.route('/<int:id>')
 def user(id):
     list = List.query.get(id)
     return list.to_dict()
