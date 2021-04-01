@@ -17,6 +17,6 @@ export function ListProvider({ children }) {
         }
         fetchData()
     }, [])
-    console.log("Lists")
+    // console.log("Lists", lists)
     return <ListContext.Provider value={lists}>{children}</ListContext.Provider>
 }

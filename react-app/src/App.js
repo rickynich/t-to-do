@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import UsersList from "./components/UsersList";
-import User from "./components/User";
+import UsersList from "./components/User/UsersList";
+import User from "./components/User/User";
+import Lists from "./components/List/Lists";
+
 
 import { ListProvider } from "./components/Context/ListContext";
 
@@ -27,7 +29,8 @@ function App() {
 						<User />
 					</Route>
 					<Route path="/" exact={true}>
-						<h1>My Home Page</h1>
+            <h1>Welcome to your To-Do List</h1>
+            <Lists></Lists>
 					</Route>
 				</Switch>
 			</BrowserRouter>
