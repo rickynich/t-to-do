@@ -23,12 +23,16 @@ def upgrade():
     sa.Column('title', sa.String(length=60), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('users',
+
+    
+    user_table = op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=40), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('username')
     )
+    op.bulk_insert(user_table, [{"username" : "Demo User"}])
+
     op.create_table('tasks',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('list_id', sa.Integer(), nullable=True),

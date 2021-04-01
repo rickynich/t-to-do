@@ -3,6 +3,7 @@ from app.models import List
 
 list_routes = Blueprint('lists', __name__)
 
+
 @list_routes.route('/')
 def lists():
     lists = List.query.all()

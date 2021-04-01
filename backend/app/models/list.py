@@ -28,9 +28,6 @@ class Task(db.Model):
 
     list = db.relationship('List', back_populates='tasks')
 
-    def __repr__(self):
-        return '<List %r>' % self.title
-
     def to_dict(self):
         return {
         "id": self.id,
