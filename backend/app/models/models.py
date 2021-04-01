@@ -21,6 +21,7 @@ class List(db.Model):
     tasks = db.relationship("Task", back_populates="lists")
 
     def to_dict(self):
+        tasks = [task.to_dict() for task in self.tasks]
         return {
         "id": self.id,
         "title": self.title,
@@ -38,10 +39,12 @@ class Task(db.Model):
     list = db.relationship('List', back_populates='tasks')
 
     def to_dict(self):
+        comments = [comment.to_dict() for comment in self.comments]
         return {
         "id": self.id,
         "desc": self.desc,
         "status": self.status,
+        "comments" : comments
         }
 
 class Comment(db.Model):
@@ -56,4 +59,5 @@ class Comment(db.Model):
     def to_dict(self):
         return {
         "id": self.id,
-        "text": self.text,
+        "text": self.text
+        }
