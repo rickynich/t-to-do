@@ -1,32 +1,58 @@
 import { Button } from "@chakra-ui/button";
-import { Flex } from "@chakra-ui/layout";
+import { Flex, Text } from "@chakra-ui/layout";
 import React, { useState, useEffect } from "react";
+import TaskComponents from "../Task/Tasks";
 
 //Chakra
 
 //context
-import {useList} from "../Context/ListContext"
+import { useList } from "../Context/ListContext";
 
 export default function ListsList() {
-    const [list, setList] = useState();
-    const loadedLists = useList() //uses ListContext
+	const [list, setList] = useState([]);
+	const [tasks, setTasks] = useState([]);
 
-    if (!loadedLists) return null
+	const loadedLists = useList(); //uses ListContext
+
+	if (!loadedLists) return null;
+
+	const listComponents = loadedLists.map((loadedList) => {
+		console.log(loadedList);
+		return (
+            <Button id={loadedList.id} onClick={() => {
+                setList(loadedList)
+                // setTasks(loadedList.tasks)
+            }
+            }>
+				{loadedList.title}
+			</Button>
+
+			// <h1>Hello</h1>
+		);
+	});
+    console.log("Tasks loaded...?", tasks)
     
-    const listComponents = loadedLists.map((list) => {
-        console.log(list)
-        return (
-            <Button
-                id={list.id}
-                onClick={()=> setList(list) }
-            >
-                {list.title}
-            </Button>
-            // <h1>Hello</h1>
-        )
-    })
+	const taskComponents = tasks.map((task) => {
+		console.log(task);
+		return (
+			<Button
+				id={task.id}
+				// onClick={()=> setTasks(loadedList.tasks) }
+			>
+				{task.desc}
+			</Button>
 
-    return (
-        <Flex>{listComponents}</Flex>
-    )
+			// <h1>Hello</h1>
+		);
+	});
+    
+
+	return (
+		<>
+			<Text>Your Lists:</Text>
+			<Flex>{listComponents}</Flex>
+			<Flex>{taskComponents}</Flex>
+			{/* {list && <TaskComponents list={list}>{TaskComponents}</TaskComponents>} */}
+		</>
+	);
 }

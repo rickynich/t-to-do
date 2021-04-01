@@ -33,7 +33,7 @@ def upgrade():
     )
     op.bulk_insert(user_table, [{"username" : "Demo User"}])
 
-    op.create_table('tasks',
+    task_table = op.create_table('tasks',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('list_id', sa.Integer(), nullable=True),
     sa.Column('desc', sa.String(length=300), nullable=False),
@@ -41,6 +41,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['list_id'], ['lists.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.bulk_insert(task_table, [{"list_id" : 1, "desc" : "Retrieve the mail", "status" : False}])
     # ### end Alembic commands ###
 
 
