@@ -16,7 +16,7 @@ export function ListProvider({ children }) {
             setLists(responseData.lists)
         }
         fetchData()
-    }, [lists])
+    }, [])
 
     return <ListContext.Provider value={lists}>{children}</ListContext.Provider>
 }
