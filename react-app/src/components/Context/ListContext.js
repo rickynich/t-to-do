@@ -17,16 +17,29 @@ export function ListProvider({ children }) {
 
 	useEffect(() => {
 		async function fetchData() {
-			const response = await fetch("/lists/");
+			const response = await fetch('/lists/');
 			const responseData = await response.json();
 			setLists(responseData.lists);
 		}
 		fetchData();
 	}, []);
 
-	// function createNewList()) {
+    async function createNewList(title) {
+        console.log("CREATE NEW LIST HIT. title:", title)
 
-	// }
+        const response = await fetch('/lists/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title
+            })
+            });
+			// const responseData = await response.json();
+			return await response.json();
+
+	}
 	// function addTaskToList(listId) {
 
 	// }
@@ -35,7 +48,7 @@ export function ListProvider({ children }) {
 	}
 	// console.log("Lists", lists)
 	return (
-		<ListContext.Provider value={{ lists, completeTask }}>
+		<ListContext.Provider value={{ lists, completeTask, createNewList }}>
 			{children}
 		</ListContext.Provider>
 	);
