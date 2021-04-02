@@ -13,7 +13,7 @@ export default function ListsList() {
 	const [tasks, setTasks] = useState([]);
 	const [comments, setComments] = useState([]);
 
-	const loadedLists = useList(); //uses ListContext
+	const loadedLists = useList().lists; //uses ListContext
 
 	if (!loadedLists) return null;
 
