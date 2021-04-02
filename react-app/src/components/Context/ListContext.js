@@ -2,16 +2,13 @@ import React, { useContext, useState, useEffect } from "react";
 
 const ListContext = React.createContext({
     lists: [],
-    addTaskToList: () => {},
-    completeTask: (id) =>{}
+    createNewList: () => {},
+	addTaskToList: () => {},
+	completeTask: (id) => {},
 });
-const ListUpdateContext = React.createContext(); // to set the selected list
 
 export function useList() {
 	return useContext(ListContext);
-}
-export function useListSelect() {
-	return useContext(ListUpdateContext);
 }
 
 export function ListProvider({ children }) {
@@ -27,16 +24,19 @@ export function ListProvider({ children }) {
 		fetchData();
 	}, []);
 
+	// function createNewList()) {
+
+	// }
 	// function addTaskToList(listId) {
-        
+
 	// }
 	function completeTask(taskId) {
-        setSelectedList()
+		setSelectedList();
 	}
 	// console.log("Lists", lists)
 	return (
-        <ListContext.Provider value={{ lists, completeTask }}>
-			<ListUpdateContext.Provider >{children}</ListUpdateContext.Provider>
+		<ListContext.Provider value={{ lists, completeTask }}>
+			{children}
 		</ListContext.Provider>
 	);
 }
