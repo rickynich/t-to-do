@@ -6,6 +6,8 @@ import Lists from "./components/List/Lists";
 
 import { ListProvider } from "./components/Context/ListContext";
 
+import { Flex, Text } from "@chakra-ui/layout";
+
 function App() {
 	// useEffect(() => {
 	//   (async() => {
@@ -28,8 +30,10 @@ function App() {
 						<User />
 					</Route>
 					<Route path="/" exact={true}>
-            <h1>Welcome to your To-Do List</h1>
-            <Lists></Lists>
+						<Flex direction="column" justifyContent="center" alignContent="center">
+							<Text>Welcome to your To-Do List</Text>
+							<Lists />
+						</Flex>
 					</Route>
 				</Switch>
 			</BrowserRouter>

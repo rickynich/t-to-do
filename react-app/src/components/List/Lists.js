@@ -18,14 +18,11 @@ export default function ListsList() {
 	if (!loadedLists) return null;
 
 	const listComponents = loadedLists.map((loadedList) => {
-		// console.log(loadedList);
 		return (
 			<Button id={loadedList.id}
 				onClick={() => {
 					setList(loadedList)
 					setTasks(loadedList.tasks)
-					// console.log("On click loadedList", loadedList)
-					// console.log("On click loadedList task", loadedList.tasks[0].desc)
             	}
             }>
 				{loadedList.title}
@@ -43,8 +40,6 @@ export default function ListsList() {
 			>
 				{task.desc}
 			</Button>
-
-			// <h1>Hello</h1>
 		);
 	});
 	const commentComponents = comments.map((comment) => {
@@ -59,11 +54,20 @@ export default function ListsList() {
     
 
 	return (
-		<Flex>
-			<Text>Your Lists:</Text>
-			<Flex>{listComponents}</Flex>
-			<Flex>{taskComponents}</Flex>
-			<Flex>{commentComponents}</Flex>
+		<Flex justifyContent="center" width="70%">
+			<Flex direction="column">
+				<Text>Lists:</Text>
+				<Button size="small">Add New List</Button>
+				<Flex>{listComponents}</Flex>
+			</Flex>
+			<Flex direction="column">
+				<Text>Tasks:</Text>
+				<Flex>{taskComponents}</Flex>
+			</Flex>
+			<Flex direction="column">
+				<Text>Comments:</Text>
+				<Flex>{commentComponents}</Flex>
+			</Flex>
 			{/* {list && <TaskComponents list={list}>{TaskComponents}</TaskComponents>} */}
 		</Flex>
 	);

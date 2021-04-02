@@ -23,9 +23,12 @@ export function ListProvider({ children }) {
 		fetchData();
 	}, []);
 
-	// function selectList() {
-
-	// }
+	function addTaskToList(listId) {
+        
+	}
+	function completeTask(taskId) {
+        
+	}
 	// console.log("Lists", lists)
 	return (
 		<ListContext.Provider value={lists}>
