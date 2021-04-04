@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import TaskComponents from "../Task/Tasks";
 
@@ -17,70 +16,67 @@ export default function ListsList() {
 	const [newListTitle, setNewListTitle] = useState();
 
 	//uses ListContext:
-	const loadedLists = useList().lists; 
-	const createNewList = useList().createNewList
+	const loadedLists = useList().lists;
+	const createNewList = useList().createNewList;
+	const deleteList = useList().deleteList;
 
 	if (!loadedLists) return null;
 
 	const listComponents = loadedLists.map((loadedList) => {
 		return (
-			<Button id={loadedList.id}
-				onClick={() => {
-					setList(loadedList)
-					setTasks(loadedList.tasks)
-            	}
-            }>
-				{loadedList.title}
-			</Button>
+			<>
+				<Button
+					id={loadedList.id}
+					onClick={() => {
+						setList(loadedList);
+						setTasks(loadedList.tasks);
+					}}
+				>
+					{loadedList.title}
+				</Button>
+				<Button onClick={() => { deleteList(loadedList.id) }}>Delete this list</Button>
+			</>
 		);
 	});
-    console.log("Tasks loaded...?", tasks)
-    
+	// console.log("Tasks loaded...?", tasks);
+
 	const taskComponents = tasks.map((task) => {
 		console.log("task in task component", task);
 		return (
-			<Button
-				id={task.id}
-				onClick={()=> setComments(task.comments) }
-			>
+			<Button id={task.id} onClick={() => setComments(task.comments)}>
 				{task.desc}
 			</Button>
 		);
 	});
 	const commentComponents = comments.map((comment) => {
-		return (
-			<Button
-				id={comment.id}
-			>
-				{comment.text}
-			</Button>
-		);
+		return <Button id={comment.id}>{comment.text}</Button>;
 	});
 	const updateNewListTitle = (e) => {
-			setNewListTitle(e.target.value);
+		setNewListTitle(e.target.value);
 	};
 
 	const createNewListHandler = () => {
-		console.log("In new List handler, newListTitle:", newListTitle)
-		createNewList(newListTitle)
-	}
+		console.log("In new List handler, newListTitle:", newListTitle);
+		createNewList(newListTitle);
+	};
 
 	return (
 		<Flex justifyContent="center" width="70%">
-			<Flex direction="column">
+			<Flex direction="column" maxWidth="100px" flexWrap="wrap">
 				<Text>Lists:</Text>
 				<Flex>
 					{/* <form onSubmit={createNewListHandler}> */}
-						<Input
-							type="text"
-							name="title"
-							placeholder="New list title here"
-							value={newListTitle}
-							onChange={updateNewListTitle}
-						></Input>
-						<Button size="small" onClick={createNewListHandler}>
-							Add New List
-						</Button>
+					<Input
+						type="text"
+						name="title"
+						width="170px"
+						placeholder="New list title here"
+						value={newListTitle}
+						onChange={updateNewListTitle}
+					></Input>
+					<Button size="small" onClick={createNewListHandler}>
+						Add New List
+					</Button>
 					{/* </form> */}
 				</Flex>
 				<Flex>{listComponents}</Flex>

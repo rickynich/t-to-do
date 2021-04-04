@@ -32,6 +32,15 @@ def makeNewList():
     return newList.to_dict()
     # return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
+@list_routes.route('/<int:list_id>', methods=["DELETE"])
+def deleteList(list_id):
+    if list_id:
+        list = List.query.get(list_id)
+        db.session.delete(list)
+        db.session.commit()
+        return "List deleted"
+    return {'errors': "There was an error with your delete request"}, 400
+
 @list_routes.route('/<int:id>')
 def user(id):
     list = List.query.get(id)
