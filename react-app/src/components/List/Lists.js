@@ -14,6 +14,7 @@ export default function ListsList() {
 	const [tasks, setTasks] = useState([]);
 	const [comments, setComments] = useState([]);
 	const [newListTitle, setNewListTitle] = useState();
+	const [newTaskDesc, setNewTaskDesc] = useState();
 
 	//uses ListContext:
 	const loadedLists = useList().lists;
@@ -59,27 +60,45 @@ export default function ListsList() {
 		console.log("In new List handler, newListTitle:", newListTitle);
 		createNewList(newListTitle);
 	};
+	const updateNewTaskDesc = (e) => {
+		setNewTaskDesc(e.target.value);
+	};
+
+	const createNewListHandler = () => {
+		console.log("In new Task handler:", newTaskDesc);
+		createNewTask(newTaskDesc);
+	};
 
 	return (
 		<Flex justifyContent="center" width="100%">
 			<Flex flexFlow="column wrap" align="space-between" width="30vh">
 				<Text>Lists:</Text>
-					<Input
-						type="text"
-						name="title"
-						// width="170px"
-						placeholder="New list title here"
-						value={newListTitle}
-						onChange={updateNewListTitle}
-					></Input>
-					<Button size="small" onClick={createNewListHandler}>
-						Add New List
-					</Button>
+				<Input
+					type="text"
+					name="title"
+					// width="170px"
+					placeholder="New list title here"
+					value={newListTitle}
+					onChange={updateNewListTitle}
+				></Input>
+				<Button size="small" onClick={createNewListHandler}>
+					Add New List
+				</Button>
 				<Flex direction="column">{listComponents}</Flex>
 			</Flex>
 			<Flex direction="column" width="30vh">
 				<Text>Tasks:</Text>
-				
+				<Input
+					type="text"
+					name="title"
+					// width="170px"
+					placeholder="New list title here"
+					value={newTaskDesc}
+					onChange={updateNewTaskDesc}
+				></Input>
+				<Button size="small" onClick={createNewTaskHandler}>
+					Add New Task
+				</Button>
 				<Flex direction="column">{taskComponents}</Flex>
 			</Flex>
 			<Flex direction="column" width="30vh">
