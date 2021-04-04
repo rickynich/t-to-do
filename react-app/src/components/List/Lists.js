@@ -24,7 +24,7 @@ export default function ListsList() {
 
 	const listComponents = loadedLists.map((loadedList) => {
 		return (
-			<>
+			<Flex>
 				<Button
 					id={loadedList.id}
 					onClick={() => {
@@ -34,8 +34,8 @@ export default function ListsList() {
 				>
 					{loadedList.title}
 				</Button>
-				<Button onClick={() => { deleteList(loadedList.id) }}>Delete this list</Button>
-			</>
+				<Button onClick={() => { deleteList(loadedList.id) }}>Delete</Button>
+			</Flex>
 		);
 	});
 	// console.log("Tasks loaded...?", tasks);
@@ -61,15 +61,13 @@ export default function ListsList() {
 	};
 
 	return (
-		<Flex justifyContent="center" width="70%">
-			<Flex direction="column" maxWidth="100px" flexWrap="wrap">
+		<Flex justifyContent="center" width="100%">
+			<Flex flexFlow="column wrap" align="space-between" width="30vh">
 				<Text>Lists:</Text>
-				<Flex>
-					{/* <form onSubmit={createNewListHandler}> */}
 					<Input
 						type="text"
 						name="title"
-						width="170px"
+						// width="170px"
 						placeholder="New list title here"
 						value={newListTitle}
 						onChange={updateNewListTitle}
@@ -77,17 +75,16 @@ export default function ListsList() {
 					<Button size="small" onClick={createNewListHandler}>
 						Add New List
 					</Button>
-					{/* </form> */}
-				</Flex>
-				<Flex>{listComponents}</Flex>
+				<Flex direction="column">{listComponents}</Flex>
 			</Flex>
-			<Flex direction="column">
+			<Flex direction="column" width="30vh">
 				<Text>Tasks:</Text>
-				<Flex>{taskComponents}</Flex>
+				
+				<Flex direction="column">{taskComponents}</Flex>
 			</Flex>
-			<Flex direction="column">
+			<Flex direction="column" width="30vh">
 				<Text>Comments:</Text>
-				<Flex>{commentComponents}</Flex>
+				<Flex direction="column">{commentComponents}</Flex>
 			</Flex>
 			{/* {list && <TaskComponents list={list}>{TaskComponents}</TaskComponents>} */}
 		</Flex>

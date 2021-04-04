@@ -75,6 +75,13 @@ export function ListProvider({ children }) {
 		setSelectedList();
 	}
 
+	// const values = {
+	// 	lists,
+	// 	completeTask,
+	// 	createNewList,
+	// 	deleteList
+	// }
+
 	return (
 		<ListContext.Provider
 			value={{ lists, completeTask, createNewList, deleteList }}
