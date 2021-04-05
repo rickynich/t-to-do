@@ -71,4 +71,15 @@ def make_new_task(list_id):
         db.session.commit()
         return list.to_dict()
     return {'errors': "There was an error with your POST request for Task add"}, 400
-    # return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+# Delete a task from a list
+@list_routes.route('/<int:list_id>/tasks/<int:task_id>', methods=["DELETE"])
+def deleteTask(list_id, task_id):
+    if task_id:
+        task = Task.query.get(task_id)
+        db.session.delete(task)
+        db.session.commit()
+        return "Task deleted"
+    return {'errors': "There was an error with your delete request"}, 400
+
+

@@ -25,7 +25,8 @@ export default function ListsList() {
 	const createNewList = useList().createNewList;
 	const deleteList = useList().deleteList;
 	const createNewTask = useList().createNewTask;
-	
+	const deleteTask = useList().deleteTask;
+
 	if (!loadedLists) return null;
 
 	const listComponents = loadedLists.map((loadedList) => {
@@ -41,7 +42,13 @@ export default function ListsList() {
 				>
 					{loadedList.title}
 				</Button>
-				<Button onClick={() => { deleteList(loadedList.id) }}>Delete</Button>
+				<Button
+					onClick={() => {
+						deleteList(loadedList.id);
+					}}
+				>
+					Delete
+				</Button>
 			</Flex>
 		);
 	});
@@ -49,9 +56,18 @@ export default function ListsList() {
 		tasks &&
 		tasks.map((task) => {
 			return (
-				<Button id={task.id} onClick={() => setComments(task.comments)}>
-					{task.title}
-				</Button>
+				<>
+					<Button id={task.id} onClick={() => setComments(task.comments)}>
+						{task.title}
+					</Button>
+					<Button
+						onClick={() => {
+							deleteTask(task.id);
+						}}
+					>
+						Delete
+					</Button>
+				</>
 			);
 		});
 	const commentComponents = comments.map((comment) => {

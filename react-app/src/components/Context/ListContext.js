@@ -14,8 +14,9 @@ export function useList() {
 
 const actions = {
 	ADD_LIST: "ADD_LIST",
-	ADD_TASK: "ADD_TASK",
 	DELETE_LIST: "DELETE_LIST",
+	ADD_TASK: "ADD_TASK",
+	DELETE_LIST: "DELETE_TASK",
 };
 
 function reducer(state, action) {
@@ -32,6 +33,8 @@ function reducer(state, action) {
 				return { ...state };
 			case actions.ADD_TASK:
 				return { ...state, tasks: action.value };
+			case actions.DELETE_TASK:
+				return { ...state };
 		default:
 			return state;
 	}
@@ -69,6 +72,7 @@ export function ListProvider({ children }) {
 		fetchTasksData();
 	}, [state]);
 
+	// List methods
 	async function createNewList(title) {
 		const response = await fetch("/lists/", {
 			method: "POST",
@@ -82,6 +86,18 @@ export function ListProvider({ children }) {
 		const newListResponseData = await response.json();
 		return dispatch({ type: actions.ADD_LIST, value: newListResponseData });
 	}
+	async function deleteList(listId) {
+		const response = await fetch(`/lists/${listId}`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		dispatch({ type: actions.DELETE_LIST });
+		return await response.json();
+	}
+
+	//Task methods
 	async function createNewTask(listId, title, desc) {
 		const response = await fetch(`/lists/${listId}`, {
 			method: "POST",
@@ -94,22 +110,21 @@ export function ListProvider({ children }) {
 			}),
 		});
 		const newTaskResponseData = await response.json();
-		// console.log("newTaskResponseData", newTaskResponseData);
 		return dispatch({
 			type: actions.ADD_TASK,
 			value: newTaskResponseData.tasks,
 		});
 	}
 
-	async function deleteList(listId) {
+	async function deleteTask(taskId) {
 		// console.log("List deleted (log from list context module). listId: ", listId)
-		const response = await fetch(`/lists/${listId}`, {
+		const response = await fetch(`/lists/${selectedList.id}/tasks/${taskId}`, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
 			},
 		});
-		dispatch({ type: actions.DELETE_LIST });
+		dispatch({ type: actions.DELETE_TASK });
 		return await response.json();
 	}
 
@@ -134,6 +149,7 @@ export function ListProvider({ children }) {
 				createNewList,
 				deleteList,
 				createNewTask,
+				deleteTask,
 				selectedList,
 				setSelectedList,
 			}}
