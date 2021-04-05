@@ -45,7 +45,6 @@ export default function ListsList() {
 			</Flex>
 		);
 	});
-	console.log("Tasks in List component", tasks)
 	const taskComponents =
 		tasks &&
 		tasks.map((task) => {
@@ -64,7 +63,6 @@ export default function ListsList() {
 		setNewListTitle(e.target.value);
 	};
 	const createNewListHandler = () => {
-		// console.log("In new List handler, newListTitle:", newListTitle);
 		createNewList(newListTitle);
 	};
 
@@ -76,7 +74,6 @@ export default function ListsList() {
 		setNewTaskDesc(e.target.value);
 	};
 	const createNewTaskHandler = () => {
-		// console.log("In new Task handler:", newTaskTitle, newTaskDesc);
 		createNewTask(selectedList.id, newTaskTitle, newTaskDesc);
 	};
 

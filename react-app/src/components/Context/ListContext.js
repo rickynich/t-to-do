@@ -21,23 +21,17 @@ const actions = {
 function reducer(state, action) {
 	switch (action.type) {
 		case actions.ADD_LIST:
-			console.log(
-				"State in reducer function: ",
-				state,
-				"incoming value: ",
-				action.value
-			);
+			// console.log(
+			// 	"State in reducer function: ",
+			// 	state,
+			// 	"incoming value: ",
+			// 	action.value
+			// );
 			return { ...state, lists: action.value };
-		case actions.ADD_TASK:
-			console.log(
-				"State in reducer function: ",
-				state,
-				"incoming value: ",
-				action.value
-			);
-			return { ...state, tasks: action.value };
-		case actions.DELETE_LIST:
-			return { ...state };
+			case actions.DELETE_LIST:
+				return { ...state };
+			case actions.ADD_TASK:
+				return { ...state, tasks: action.value };
 		default:
 			return state;
 	}
@@ -89,14 +83,6 @@ export function ListProvider({ children }) {
 		return dispatch({ type: actions.ADD_LIST, value: newListResponseData });
 	}
 	async function createNewTask(listId, title, desc) {
-		console.log(
-			"CREATE NEW TASK HIT. desc:",
-			desc,
-			"listId",
-			listId,
-			"title:",
-			title
-		);
 		const response = await fetch(`/lists/${listId}`, {
 			method: "POST",
 			headers: {
@@ -108,7 +94,7 @@ export function ListProvider({ children }) {
 			}),
 		});
 		const newTaskResponseData = await response.json();
-		console.log("newTaskResponseData", newTaskResponseData);
+		// console.log("newTaskResponseData", newTaskResponseData);
 		return dispatch({
 			type: actions.ADD_TASK,
 			value: newTaskResponseData.tasks,
