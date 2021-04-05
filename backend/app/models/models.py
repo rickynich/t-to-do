@@ -32,6 +32,7 @@ class Task(db.Model):
     __tablename__ = 'tasks'
 
     id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(100), nullable = False )
     desc = db.Column(db.String(300), nullable = False )
     status = db.Column(db.Boolean)
     list_id = db.Column(db.Integer, db.ForeignKey('lists.id'), nullable=False)
