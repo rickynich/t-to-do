@@ -39,7 +39,7 @@ def deleteList(list_id):
         # tasks = Task.query.filter_by(list_id=list_id).all() # to delete related tasks
         # print("tasks {}".format(tasks))
         db.session.delete(list)
-        db.session.delete(tasks)
+        # db.session.delete(tasks)
         db.session.commit()
         return "List deleted"
     return {'errors': "There was an error with your delete request"}, 400
