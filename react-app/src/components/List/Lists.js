@@ -10,21 +10,22 @@ import { Input } from "@chakra-ui/react";
 import { useList } from "../Context/ListContext";
 
 export default function ListsList() {
-	const [list, setList] = useState([]);
-	const [tasks, setTasks] = useState([]);
+	// const [tasks, setTasks] = useState([]);
 	const [comments, setComments] = useState([]);
 	const [newListTitle, setNewListTitle] = useState();
 	const [newTaskTitle, setNewTaskTitle] = useState();
 	const [newTaskDesc, setNewTaskDesc] = useState();
 
-	console.log("selected list:", list)
-
 	//uses ListContext:
 	const loadedLists = useList().lists;
+	const selectedList = useList().selectedList;
+	const setSelectedList = useList().setSelectedList;
+	const tasks = useList().tasks;
+	const setTasks = useList().setTasks;
 	const createNewList = useList().createNewList;
 	const deleteList = useList().deleteList;
 	const createNewTask = useList().createNewTask;
-
+	
 	if (!loadedLists) return null;
 
 	const listComponents = loadedLists.map((loadedList) => {
@@ -33,7 +34,8 @@ export default function ListsList() {
 				<Button
 					id={loadedList.id}
 					onClick={() => {
-						setList(loadedList);
+						// setList(loadedList);
+						setSelectedList(loadedList);
 						setTasks(loadedList.tasks);
 					}}
 				>
@@ -43,15 +45,16 @@ export default function ListsList() {
 			</Flex>
 		);
 	});
-
-	const taskComponents = tasks.map((task) => {
-		console.log("task in task component", task);
-		return (
-			<Button id={task.id} onClick={() => setComments(task.comments)}>
-				{task.title}
-			</Button>
-		);
-	});
+	console.log("Tasks in List component", tasks)
+	const taskComponents =
+		tasks &&
+		tasks.map((task) => {
+			return (
+				<Button id={task.id} onClick={() => setComments(task.comments)}>
+					{task.title}
+				</Button>
+			);
+		});
 	const commentComponents = comments.map((comment) => {
 		return <Button id={comment.id}>{comment.text}</Button>;
 	});
@@ -60,9 +63,8 @@ export default function ListsList() {
 	const updateNewListTitle = (e) => {
 		setNewListTitle(e.target.value);
 	};
-
 	const createNewListHandler = () => {
-		console.log("In new List handler, newListTitle:", newListTitle);
+		// console.log("In new List handler, newListTitle:", newListTitle);
 		createNewList(newListTitle);
 	};
 
@@ -74,8 +76,8 @@ export default function ListsList() {
 		setNewTaskDesc(e.target.value);
 	};
 	const createNewTaskHandler = () => {
-		console.log("In new Task handler:", newTaskTitle, newTaskDesc);
-		createNewTask(list.id, newTaskTitle, newTaskDesc);
+		// console.log("In new Task handler:", newTaskTitle, newTaskDesc);
+		createNewTask(selectedList.id, newTaskTitle, newTaskDesc);
 	};
 
 	return (

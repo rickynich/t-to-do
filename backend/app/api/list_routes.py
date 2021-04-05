@@ -25,7 +25,7 @@ def makeNewList():
     print("IN MAKE NEW LIST________________________________________________")
     form = CreateListForm()
     # if form.validate_on_submit():
-    newList = List(title = form.data['title'], desc = form.data['desc'])
+    newList = List(title = form.data['title'])
     print('new list: {}'.format(newList))
     db.session.add(newList)
     db.session.commit()
@@ -36,6 +36,7 @@ def makeNewList():
 def deleteList(list_id):
     if list_id:
         list = List.query.get(list_id)
+        # tasks = Task.query.filter_by(list_id=list_id).all() # to delete related tasks
         db.session.delete(list)
         db.session.commit()
         return "List deleted"
@@ -46,9 +47,17 @@ def user(id):
     list = List.query.get(id)
     return list.to_dict()
 
+# Get all tasks for a list:
+@list_routes.route('/<int:list_id>/tasks', methods=["GET"])
+def get_all_tasks(list_id):
+    if list_id:
+        tasks = Task.query.filter_by(list_id=list_id).all()
+        return {"tasks": [task.to_dict() for task in tasks]}
+
+
 # Adds a new task to a list:
 @list_routes.route('/<int:list_id>', methods=["POST"])
-def makeNewTask(list_id):
+def make_new_task(list_id):
     print("IN MAKE NEW TASK~~~~~~~~~~~~~~~", list_id)
     if list_id:
         list = List.query.get(list_id)
