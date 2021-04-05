@@ -16,10 +16,13 @@ export default function ListsList() {
 	const [newListTitle, setNewListTitle] = useState();
 	const [newTaskDesc, setNewTaskDesc] = useState();
 
+	console.log("selected list:", list)
+
 	//uses ListContext:
 	const loadedLists = useList().lists;
 	const createNewList = useList().createNewList;
 	const deleteList = useList().deleteList;
+	const createNewTask = useList().createNewTask;
 
 	if (!loadedLists) return null;
 
@@ -64,9 +67,9 @@ export default function ListsList() {
 		setNewTaskDesc(e.target.value);
 	};
 
-	const createNewListHandler = () => {
+	const createNewTaskHandler = () => {
 		console.log("In new Task handler:", newTaskDesc);
-		createNewTask(newTaskDesc);
+		createNewTask(list.id, newTaskDesc);
 	};
 
 	return (

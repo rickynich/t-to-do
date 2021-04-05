@@ -14,18 +14,32 @@ export function useList() {
 
 const actions = {
 	ADD_LIST: "ADD_LIST",
-	DELETE_LIST: "DELETE_LIST"
+	ADD_TASK: "ADD_TASK",
+	DELETE_LIST: "DELETE_LIST",
 };
 
 function reducer(state, action) {
 	switch (action.type) {
 		case actions.ADD_LIST:
-			console.log("State in reducer function: ", state, "incoming value: ",action.value)
-			return { ...state, lists: action.value }
+			console.log(
+				"State in reducer function: ",
+				state,
+				"incoming value: ",
+				action.value
+			);
+			return { ...state, lists: action.value };
+			case actions.ADD_TASK:
+				console.log(
+					"State in reducer function: ",
+					state,
+					"incoming value: ",
+					action.value
+				);
+				return { ...state, tasks: action.value };
 		case actions.DELETE_LIST:
-			return { ...state }
+			return { ...state };
 		default:
-			return state
+			return state;
 	}
 }
 
@@ -58,6 +72,21 @@ export function ListProvider({ children }) {
 			const newListResponseData = await response.json();
 			return dispatch({ type: actions.ADD_LIST, value: newListResponseData });
 	}
+    async function createNewTask(listId, desc) {
+        console.log("CREATE NEW TASK HIT. desc:", desc, "listId", listId)
+        const response = await fetch(`/lists/${listId}`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						listId,
+						// desc
+					}),
+				});
+			const newTaskResponseData = await response.json();
+			return dispatch({ type: actions.ADD_TASK, value: newTaskResponseData });
+	}
 
 	async function deleteList(listId) {
 		// console.log("List deleted (log from list context module). listId: ", listId)
@@ -84,7 +113,7 @@ export function ListProvider({ children }) {
 
 	return (
 		<ListContext.Provider
-			value={{ lists, completeTask, createNewList, deleteList }}
+			value={{ lists, completeTask, createNewList, deleteList, createNewTask }}
 		>
 			{children}
 		</ListContext.Provider>

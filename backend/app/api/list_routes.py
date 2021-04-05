@@ -45,3 +45,19 @@ def deleteList(list_id):
 def user(id):
     list = List.query.get(id)
     return list.to_dict()
+
+# Adds a new task to a list:
+@list_routes.route('/<int:list_id>', methods=["POST"])
+def makeNewTask(list_id):
+    print("IN MAKE NEW TASK~~~~~~~~~~~~~~~", list_id)
+    if list_id:
+        list = List.query.get(id)
+        print("List:", list)
+        form = CreateTaskForm()
+        newTask = Task(list_id = list.id, desc = form.data['desc'], status = False)
+        print('new task: {}'.format(newTask))
+        db.session.add(newTask)
+        db.session.commit()
+        return list.to_dict()
+    return {'errors': "There was an error with your POST request for Task add"}, 400
+    # return {'errors': validation_errors_to_error_messages(form.errors)}, 401
