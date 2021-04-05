@@ -46,6 +46,7 @@ class Task(db.Model):
         comments = [comment.to_dict() for comment in self.comments]
         return {
         "id": self.id,
+        "title": self.title,
         "desc": self.desc,
         "status": self.status,
         "comments" : comments

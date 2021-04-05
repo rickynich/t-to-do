@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from app.models import *
-from app.forms.forms import CreateListForm
+from app.forms.forms import CreateListForm, CreateTaskForm
 
 list_routes = Blueprint('lists', __name__)
 
@@ -25,7 +25,7 @@ def makeNewList():
     print("IN MAKE NEW LIST________________________________________________")
     form = CreateListForm()
     # if form.validate_on_submit():
-    newList = List(title = form.data['title'])
+    newList = List(title = form.data['title'], desc = form.data['desc'])
     print('new list: {}'.format(newList))
     db.session.add(newList)
     db.session.commit()
@@ -51,10 +51,10 @@ def user(id):
 def makeNewTask(list_id):
     print("IN MAKE NEW TASK~~~~~~~~~~~~~~~", list_id)
     if list_id:
-        list = List.query.get(id)
+        list = List.query.get(list_id)
         print("List:", list)
         form = CreateTaskForm()
-        newTask = Task(list_id = list.id, desc = form.data['desc'], status = False)
+        newTask = Task(list_id = list.id, title = form.data['title'], desc = form.data['desc'], status = False)
         print('new task: {}'.format(newTask))
         db.session.add(newTask)
         db.session.commit()

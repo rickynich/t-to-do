@@ -14,6 +14,7 @@ export default function ListsList() {
 	const [tasks, setTasks] = useState([]);
 	const [comments, setComments] = useState([]);
 	const [newListTitle, setNewListTitle] = useState();
+	const [newTaskTitle, setNewTaskTitle] = useState();
 	const [newTaskDesc, setNewTaskDesc] = useState();
 
 	console.log("selected list:", list)
@@ -42,19 +43,20 @@ export default function ListsList() {
 			</Flex>
 		);
 	});
-	// console.log("Tasks loaded...?", tasks);
 
 	const taskComponents = tasks.map((task) => {
 		console.log("task in task component", task);
 		return (
 			<Button id={task.id} onClick={() => setComments(task.comments)}>
-				{task.desc}
+				{task.title}
 			</Button>
 		);
 	});
 	const commentComponents = comments.map((comment) => {
 		return <Button id={comment.id}>{comment.text}</Button>;
 	});
+
+	//new List handling
 	const updateNewListTitle = (e) => {
 		setNewListTitle(e.target.value);
 	};
@@ -63,13 +65,17 @@ export default function ListsList() {
 		console.log("In new List handler, newListTitle:", newListTitle);
 		createNewList(newListTitle);
 	};
+
+	//new Task handling
+	const updateNewTaskTitle = (e) => {
+		setNewTaskTitle(e.target.value);
+	};
 	const updateNewTaskDesc = (e) => {
 		setNewTaskDesc(e.target.value);
 	};
-
 	const createNewTaskHandler = () => {
-		console.log("In new Task handler:", newTaskDesc);
-		createNewTask(list.id, newTaskDesc);
+		console.log("In new Task handler:", newTaskTitle, newTaskDesc);
+		createNewTask(list.id, newTaskTitle, newTaskDesc);
 	};
 
 	return (
@@ -95,7 +101,15 @@ export default function ListsList() {
 					type="text"
 					name="title"
 					// width="170px"
-					placeholder="New list title here"
+					placeholder="New task title here"
+					value={newTaskTitle}
+					onChange={updateNewTaskTitle}
+				></Input>
+				<Input
+					type="text"
+					name="title"
+					// width="170px"
+					placeholder="New task description here"
 					value={newTaskDesc}
 					onChange={updateNewTaskDesc}
 				></Input>
@@ -108,7 +122,6 @@ export default function ListsList() {
 				<Text>Comments:</Text>
 				<Flex direction="column">{commentComponents}</Flex>
 			</Flex>
-			{/* {list && <TaskComponents list={list}>{TaskComponents}</TaskComponents>} */}
 		</Flex>
 	);
 }

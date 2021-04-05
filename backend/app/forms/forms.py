@@ -6,7 +6,8 @@ class CreateListForm(FlaskForm):
     title = StringField('title', validators=[DataRequired()]) #add length limiter as well
 
 class CreateTaskForm(FlaskForm):
-    desc = StringField('desc', validators=[DataRequired()])
+    title = StringField('title', validators=[DataRequired()])
+    desc = StringField('desc')
     status = BooleanField('status')
     
 # class CreateTaskForm(FlaskForm):

@@ -59,7 +59,6 @@ export function ListProvider({ children }) {
 	}, [state]);
 
     async function createNewList(title) {
-        // console.log("CREATE NEW LIST HIT. title:", title)
         const response = await fetch('/lists/', {
             method: 'POST',
             headers: {
@@ -72,16 +71,16 @@ export function ListProvider({ children }) {
 			const newListResponseData = await response.json();
 			return dispatch({ type: actions.ADD_LIST, value: newListResponseData });
 	}
-    async function createNewTask(listId, desc) {
-        console.log("CREATE NEW TASK HIT. desc:", desc, "listId", listId)
+    async function createNewTask(listId, title, desc) {
+        console.log("CREATE NEW TASK HIT. desc:", desc, "listId", listId, "title:", title)
         const response = await fetch(`/lists/${listId}`, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 					},
 					body: JSON.stringify({
-						listId,
-						// desc
+						title,
+						desc
 					}),
 				});
 			const newTaskResponseData = await response.json();
