@@ -3,15 +3,13 @@ import TaskComponents from "../Task/Tasks";
 
 //Chakra
 import { Button } from "@chakra-ui/button";
-import { Flex, Text } from "@chakra-ui/layout";
+import { Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
 import { Input } from "@chakra-ui/react";
 
 //context
 import { useList } from "../Context/ListContext";
 
 export default function ListsList() {
-	// const [tasks, setTasks] = useState([]);
-	// const [comments, setComments] = useState([]);
 	const [newListTitle, setNewListTitle] = useState();
 	const [newTaskTitle, setNewTaskTitle] = useState();
 	const [newTaskDesc, setNewTaskDesc] = useState();
@@ -36,68 +34,7 @@ export default function ListsList() {
 
 	if (!loadedLists) return null;
 
-	const listComponents = loadedLists.map((loadedList) => {
-		return (
-			<Flex>
-				<Button
-					id={loadedList.id}
-					onClick={() => {
-						// setList(loadedList);
-						setSelectedList(loadedList);
-						setTasks(loadedList.tasks);
-					}}
-				>
-					{loadedList.title}
-				</Button>
-				<Button
-					onClick={() => {
-						deleteList(loadedList.id);
-					}}
-				>
-					Delete
-				</Button>
-			</Flex>
-		);
-	});
-	
-	const taskComponents =
-		tasks &&
-		tasks.map((task) => {
-			return (
-				<>
-					<Button id={task.id} onClick={() => {
-						setSelectedTask(task);
-						setComments(task.comments)
-					}}>
-						{task.title}
-					</Button>
-					<Button
-						onClick={() => {
-							deleteTask(task.id);
-						}}
-					>
-						Delete
-					</Button>
-				</>
-			);
-		});
-	
-	const commentComponents = comments.map((comment) => {
-		return (
-			<Flex>
-				<Button id={comment.id}>{comment.text}</Button>
-				<Button
-					onClick={() => {
-						deleteComment(comment.id);
-					}}
-				>
-					Delete
-				</Button>
-			</Flex>
-			);
-		});
-
-	//new List handling
+		//new List handling
 	const updateNewListTitle = (e) => {
 		setNewListTitle(e.target.value);
 	};
@@ -124,8 +61,78 @@ export default function ListsList() {
 		createNewComment(selectedTask.id, newCommentText);
 	};
 
+	const listComponents = loadedLists.map((loadedList) => {
+		return (
+			<GridItem>
+				<Button
+					id={loadedList.id}
+					onClick={() => {
+						// setList(loadedList);
+						setSelectedList(loadedList);
+						setTasks(loadedList.tasks);
+					}}
+				>
+					{loadedList.title}
+				</Button>
+				<Button
+					onClick={() => {
+						deleteList(loadedList.id);
+					}}
+				>
+					Delete
+				</Button>
+			</GridItem>
+		);
+	});
+	
+	const taskComponents =
+		tasks &&
+		tasks.map((task) => {
+			return (
+				<Flex>
+					<Button id={task.id} onClick={() => {
+						setSelectedTask(task);
+						setComments(task.comments)
+					}}>
+						{task.title}
+					</Button>
+					<Button
+						onClick={() => {
+							deleteTask(task.id);
+						}}
+					>
+						Delete
+					</Button>
+				</Flex>
+			);
+		});
+	
+	const commentComponents = comments.map((comment) => {
+		return (
+			<Flex>
+				<Text id={comment.id}>
+					{comment.text}
+				</Text>
+				<Button
+					onClick={() => {
+						deleteComment(comment.id);
+					}}
+				>
+					Delete
+				</Button>
+			</Flex>
+		);
+		});
+
+
+
 	return (
-		<Flex justifyContent="center" width="100%">
+		<Grid
+			justifyContent="center"
+			width="100%"
+			gridAutoColumns="auto"
+			gridTemplateColumns="repeat(3, 1fr)"
+		>
 			<Flex flexFlow="column wrap" align="space-between" width="30vh">
 				<Text>Lists:</Text>
 				<Input
@@ -179,6 +186,6 @@ export default function ListsList() {
 				</Button>
 				<Flex direction="column">{commentComponents}</Flex>
 			</Flex>
-		</Flex>
+		</Grid>
 	);
 }

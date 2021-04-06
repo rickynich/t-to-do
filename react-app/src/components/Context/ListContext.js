@@ -84,9 +84,11 @@ export function ListProvider({ children }) {
 			);
 			const response = await fetch(`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments`);
 			const responseData = await response.json();
+			console.log("responseData.comments", responseData.comments);
 			setComments(responseData.comments);
 		}
 		fetchCommentsData();
+		console.log("New comments set after useEffect:", comments)
 	}, [state]);
 
 	// List methods
