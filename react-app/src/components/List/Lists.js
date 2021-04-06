@@ -11,21 +11,28 @@ import { useList } from "../Context/ListContext";
 
 export default function ListsList() {
 	// const [tasks, setTasks] = useState([]);
-	const [comments, setComments] = useState([]);
+	// const [comments, setComments] = useState([]);
 	const [newListTitle, setNewListTitle] = useState();
 	const [newTaskTitle, setNewTaskTitle] = useState();
 	const [newTaskDesc, setNewTaskDesc] = useState();
+	const [newCommentText, setNewCommentText] = useState();
 
 	//uses ListContext:
 	const loadedLists = useList().lists;
 	const selectedList = useList().selectedList;
 	const setSelectedList = useList().setSelectedList;
+	const selectedTask = useList().selectedTask;
+	const setSelectedTask = useList().setSelectedTask;
 	const tasks = useList().tasks;
 	const setTasks = useList().setTasks;
 	const createNewList = useList().createNewList;
 	const deleteList = useList().deleteList;
 	const createNewTask = useList().createNewTask;
 	const deleteTask = useList().deleteTask;
+	const createNewComment = useList().createNewComment;
+	const deleteComment = useList().deleteComment;
+	const comments = useList().comments;
+	const setComments = useList().setComments;
 
 	if (!loadedLists) return null;
 
@@ -57,7 +64,10 @@ export default function ListsList() {
 		tasks.map((task) => {
 			return (
 				<>
-					<Button id={task.id} onClick={() => setComments(task.comments)}>
+					<Button id={task.id} onClick={() => {
+						setSelectedTask(task);
+						setComments(task.comments)
+					}}>
 						{task.title}
 					</Button>
 					<Button
@@ -71,8 +81,19 @@ export default function ListsList() {
 			);
 		});
 	const commentComponents = comments.map((comment) => {
-		return <Button id={comment.id}>{comment.text}</Button>;
-	});
+		return (
+			<Flex>
+				<Button id={comment.id}>{comment.text}</Button>
+				<Button
+					onClick={() => {
+						deleteComment(comment.id);
+					}}
+				>
+					Delete
+				</Button>
+			</Flex>
+			);
+		});
 
 	//new List handling
 	const updateNewListTitle = (e) => {
@@ -91,6 +112,14 @@ export default function ListsList() {
 	};
 	const createNewTaskHandler = () => {
 		createNewTask(selectedList.id, newTaskTitle, newTaskDesc);
+	};
+
+	//new Comment handling
+	const updateNewCommentText = (e) => {
+		setNewCommentText(e.target.value);
+	};
+	const createNewCommentHandler = () => {
+		createNewComment(selectedTask.id, newCommentText);
 	};
 
 	return (
@@ -135,6 +164,17 @@ export default function ListsList() {
 			</Flex>
 			<Flex direction="column" width="30vh">
 				<Text>Comments:</Text>
+				<Input
+					type="text"
+					name="title"
+					// width="170px"
+					placeholder="New comment text here"
+					value={newCommentText}
+					onChange={updateNewCommentText}
+				></Input>
+				<Button size="small" onClick={createNewCommentHandler}>
+					Add New Comment
+				</Button>
 				<Flex direction="column">{commentComponents}</Flex>
 			</Flex>
 		</Flex>

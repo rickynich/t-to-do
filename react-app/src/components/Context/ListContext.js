@@ -155,20 +155,20 @@ export function ListProvider({ children }) {
 			value: newCommentResponseData.comments,
 		});
 	}
-	// async function deleteComment(commentId) {
-	// 	// console.log("List deleted (log from list context module). listId: ", listId)
-	// 	const response = await fetch(
-	// 		`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments/${commentId}`,
-	// 		{
-	// 			method: "DELETE",
-	// 			headers: {
-	// 				"Content-Type": "application/json",
-	// 			},
-	// 		}
-	// 	);
-	// 	dispatch({ type: actions.DELETE_COMMENT });
-	// 	return await response.json();
-	// }
+	async function deleteComment(commentId) {
+		// console.log("List deleted (log from list context module). listId: ", listId)
+		const response = await fetch(
+			`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments/${commentId}`,
+			{
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		dispatch({ type: actions.DELETE_COMMENT });
+		return await response.json();
+	}
 	
 	// const values = {
 	// 	lists,
@@ -182,18 +182,22 @@ export function ListProvider({ children }) {
 			value={{
 				lists,
 				tasks,
+				setTasks,
 				comments,
+				setComments,
 				selectedList,
 				setSelectedList,
 				selectedTask,
 				setSelectedTask,
-				setTasks,
+				// selectedComment,
+				// setSelectedComment,
 				completeTask,
 				createNewList,
 				deleteList,
 				createNewTask,
 				deleteTask,
 				createNewComment,
+				deleteComment,
 			}}
 		>
 			{children}

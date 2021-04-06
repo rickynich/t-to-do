@@ -89,7 +89,7 @@ def get_all_comments(task_id):
         return {"comments": [comment.to_dict() for comment in comments]}
 
 
-# Adds a new task to a list: 
+# Adds a new comment to a list: 
 @list_routes.route('/<int:list_id>/tasks/<int:task_id>/comments', methods=["POST"])
 def make_new_comment(task_id):
     print("IN MAKE NEW COMMENT~~~~~~~~~~~~~~~", task_id)
