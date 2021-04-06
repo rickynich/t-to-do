@@ -11,4 +11,4 @@ class CreateTaskForm(FlaskForm):
     status = BooleanField('status')
     
 class CreateCommentForm(FlaskForm):
-    text = StringField('text', DataRequired(), Length(max=300))
+    text = StringField('text', validators=[DataRequired()])

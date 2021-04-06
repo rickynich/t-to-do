@@ -136,9 +136,9 @@ export function ListProvider({ children }) {
 	}
 	
 	//Comment methods
-	async function createNewComment(text) {
+	async function createNewComment(taskId, text) {
 		const response = await fetch(
-			`/lists/${selectedList.id}/tasks/${selectedTask.id}`,
+			`/lists/${selectedList.id}/tasks/${taskId}`,
 			{
 				method: "POST",
 				headers: {

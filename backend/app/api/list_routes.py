@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from app.models import *
-from app.forms.forms import CreateListForm, CreateTaskForm
+from app.forms.forms import CreateListForm, CreateTaskForm, CreateCommentForm
 
 list_routes = Blueprint('lists', __name__)
 
@@ -59,7 +59,6 @@ def get_all_tasks(list_id):
 # Adds a new task to a list:
 @list_routes.route('/<int:list_id>', methods=["POST"])
 def make_new_task(list_id):
-    print("IN MAKE NEW TASK~~~~~~~~~~~~~~~", list_id)
     if list_id:
         list = List.query.get(list_id)
         print("List:", list)
@@ -90,18 +89,17 @@ def get_all_comments(task_id):
 
 
 # Adds a new comment to a list: 
-@list_routes.route('/<int:list_id>/tasks/<int:task_id>/comments', methods=["POST"])
-def make_new_comment(task_id):
+@list_routes.route('/<int:list_id>/tasks/<int:task_id>', methods=["POST"])
+def make_new_comment(list_id, task_id):
     print("IN MAKE NEW COMMENT~~~~~~~~~~~~~~~", task_id)
     if task_id:
         task = Task.query.get(task_id)
-        print("comment:", comment)
         form = CreateCommentForm()
         newComment = Comment(task_id = task.id, text = form.data['text'])
-        print('new task: {}'.format(newComment))
+        print('**************************new comment: {}'.format(newComment))
         db.session.add(newComment)
         db.session.commit()
-        return comment.to_dict()
+        return task.to_dict()
     return {'errors': "There was an error with your POST request for Coment add"}, 400
 
 
