@@ -59,6 +59,7 @@ export default function ListsList() {
 			</Flex>
 		);
 	});
+	
 	const taskComponents =
 		tasks &&
 		tasks.map((task) => {
@@ -80,6 +81,7 @@ export default function ListsList() {
 				</>
 			);
 		});
+	
 	const commentComponents = comments.map((comment) => {
 		return (
 			<Flex>

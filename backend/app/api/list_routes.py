@@ -83,6 +83,7 @@ def delete_task(list_id, task_id):
 # Get all comments for a list:
 @list_routes.route('/<int:list_id>/tasks/<int:task_id>/comments)', methods=["GET"])
 def get_all_comments(task_id):
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~IN GET ALL COMMENTS! {}~~~~~~~~~~~~~~'.format(task_id))
     if task_id:
         comments = Comment.query.filter_by(task_id=task_id).all()
         return {"comments": [comment.to_dict() for comment in comments]}

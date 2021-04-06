@@ -32,7 +32,7 @@ function reducer(state, action) {
 		case actions.DELETE_TASK:
 			return { ...state };
 		case actions.ADD_COMMENT:
-			return { ...state, tasks: action.value };
+			return { ...state, comments: action.value };
 		case actions.DELETE_COMMENT:
 				return { ...state };
 		default:
@@ -52,7 +52,7 @@ export function ListProvider({ children }) {
 	]);
 	const [selectedComment, setSelectedComment] = useState([]);
 
-	const initialValue = { lists, tasks };
+	const initialValue = { lists, tasks, comments };
 	const [state, dispatch] = useReducer(reducer, initialValue); //add initial state to have current lists
 
 	//initial load and state change
@@ -74,6 +74,19 @@ export function ListProvider({ children }) {
 			setTasks(responseData.tasks);
 		}
 		fetchTasksData();
+	}, [state]);
+
+	//comments updater
+	useEffect(() => {
+		async function fetchCommentsData() {
+			console.log(
+				`In useEffect updater for comments: /lists/${selectedList.id}/tasks/${selectedTask.id}/comments`
+			);
+			const response = await fetch(`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments`);
+			const responseData = await response.json();
+			setComments(responseData.comments);
+		}
+		fetchCommentsData();
 	}, [state]);
 
 	// List methods
@@ -150,6 +163,7 @@ export function ListProvider({ children }) {
 			}
 		);
 		const newCommentResponseData = await response.json();
+		// console.log("NEW COMMENT RESPONSE DATA in useEffect", newCommentResponseData)
 		return dispatch({
 			type: actions.ADD_COMMENT,
 			value: newCommentResponseData.comments,
