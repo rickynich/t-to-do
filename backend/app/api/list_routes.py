@@ -22,7 +22,6 @@ def lists():
 
 @list_routes.route('/', methods=["POST"])
 def makeNewList():
-    print("IN MAKE NEW LIST________________________________________________")
     form = CreateListForm()
     # if form.validate_on_submit():
     newList = List(title = form.data['title'])
@@ -74,7 +73,7 @@ def make_new_task(list_id):
 
 # Delete a task from a list
 @list_routes.route('/<int:list_id>/tasks/<int:task_id>', methods=["DELETE"])
-def deleteTask(list_id, task_id):
+def delete_task(list_id, task_id):
     if task_id:
         task = Task.query.get(task_id)
         db.session.delete(task)
@@ -82,4 +81,37 @@ def deleteTask(list_id, task_id):
         return "Task deleted"
     return {'errors': "There was an error with your delete request"}, 400
 
+# Get all comments for a list:
+@list_routes.route('/<int:list_id>/tasks/<int:task_id>/comments)', methods=["GET"])
+def get_all_comments(task_id):
+    if task_id:
+        comments = Comment.query.filter_by(task_id=task_id).all()
+        return {"comments": [comment.to_dict() for comment in comments]}
+
+
+# Adds a new task to a list: 
+@list_routes.route('/<int:list_id>/tasks/<int:task_id>/comments', methods=["POST"])
+def make_new_comment(task_id):
+    print("IN MAKE NEW COMMENT~~~~~~~~~~~~~~~", task_id)
+    if task_id:
+        task = Task.query.get(task_id)
+        print("comment:", comment)
+        form = CreateCommentForm()
+        newComment = Comment(task_id = task.id, text = form.data['text'])
+        print('new task: {}'.format(newComment))
+        db.session.add(newComment)
+        db.session.commit()
+        return comment.to_dict()
+    return {'errors': "There was an error with your POST request for Coment add"}, 400
+
+
+# Delete a comment from a list: 
+@list_routes.route('/<int:list_id>/tasks/<int:task_id>/comments/<int:comment_id>', methods=["DELETE"])
+def delete_comment(list_id, task_id, comment_id):
+    if comment_id:
+        comment = Comment.query.get(comment_id)
+        db.session.delete(comment)
+        db.session.commit()
+        return "Comment deleted"
+    return {'errors': "There was an error with your delete request"}, 400
 

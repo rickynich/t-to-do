@@ -10,6 +10,5 @@ class CreateTaskForm(FlaskForm):
     desc = StringField('desc')
     status = BooleanField('status')
     
-# class CreateTaskForm(FlaskForm):
-#     desc = StringField('desc', DataRequired(), Length(max=300)
-#     status = BooleanField('status')
+class CreateCommentForm(FlaskForm):
+    text = StringField('text', DataRequired(), Length(max=300))

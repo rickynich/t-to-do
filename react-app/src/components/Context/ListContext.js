@@ -16,24 +16,24 @@ const actions = {
 	ADD_LIST: "ADD_LIST",
 	DELETE_LIST: "DELETE_LIST",
 	ADD_TASK: "ADD_TASK",
-	DELETE_LIST: "DELETE_TASK",
+	DELETE_TASK: "DELETE_TASK",
+	ADD_COMMENT: "ADD_COMMENT",
+	DELETE_COMMENT: "DELETE_COMMENT",
 };
 
 function reducer(state, action) {
 	switch (action.type) {
 		case actions.ADD_LIST:
-			// console.log(
-			// 	"State in reducer function: ",
-			// 	state,
-			// 	"incoming value: ",
-			// 	action.value
-			// );
 			return { ...state, lists: action.value };
-			case actions.DELETE_LIST:
-				return { ...state };
-			case actions.ADD_TASK:
-				return { ...state, tasks: action.value };
-			case actions.DELETE_TASK:
+		case actions.DELETE_LIST:
+			return { ...state };
+		case actions.ADD_TASK:
+			return { ...state, tasks: action.value };
+		case actions.DELETE_TASK:
+			return { ...state };
+		case actions.ADD_COMMENT:
+			return { ...state, tasks: action.value };
+		case actions.DELETE_COMMENT:
 				return { ...state };
 		default:
 			return state;
@@ -43,13 +43,17 @@ function reducer(state, action) {
 export function ListProvider({ children }) {
 	const [lists, setLists] = useState([]);
 	const [tasks, setTasks] = useState(["default task"]);
+	const [comments, setComments] = useState(["default comment"]);
 	const [selectedList, setSelectedList] = useState([
 		{ title: "default list", tasks: [{ title: "default task" }] },
 	]);
+	const [selectedTask, setSelectedTask] = useState([
+		{ task: "default task", comments: [{ title: "default task" }] },
+	]);
+	const [selectedComment, setSelectedComment] = useState([]);
+
 	const initialValue = { lists, tasks };
 	const [state, dispatch] = useReducer(reducer, initialValue); //add initial state to have current lists
-	console.log("Lists array in context", lists);
-	console.log("Selected list at start in context", selectedList);
 
 	//initial load and state change
 	useEffect(() => {
@@ -115,7 +119,6 @@ export function ListProvider({ children }) {
 			value: newTaskResponseData.tasks,
 		});
 	}
-
 	async function deleteTask(taskId) {
 		// console.log("List deleted (log from list context module). listId: ", listId)
 		const response = await fetch(`/lists/${selectedList.id}/tasks/${taskId}`, {
@@ -127,11 +130,46 @@ export function ListProvider({ children }) {
 		dispatch({ type: actions.DELETE_TASK });
 		return await response.json();
 	}
-
+	//INCOMPLETE:
 	function completeTask(taskId) {
 		setSelectedList();
 	}
-
+	
+	//Comment methods
+	async function createNewComment(text) {
+		const response = await fetch(
+			`/lists/${selectedList.id}/tasks/${selectedTask.id}`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					text,
+				}),
+			}
+		);
+		const newCommentResponseData = await response.json();
+		return dispatch({
+			type: actions.ADD_COMMENT,
+			value: newCommentResponseData.comments,
+		});
+	}
+	// async function deleteComment(commentId) {
+	// 	// console.log("List deleted (log from list context module). listId: ", listId)
+	// 	const response = await fetch(
+	// 		`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments/${commentId}`,
+	// 		{
+	// 			method: "DELETE",
+	// 			headers: {
+	// 				"Content-Type": "application/json",
+	// 			},
+	// 		}
+	// 	);
+	// 	dispatch({ type: actions.DELETE_COMMENT });
+	// 	return await response.json();
+	// }
+	
 	// const values = {
 	// 	lists,
 	// 	completeTask,
@@ -144,14 +182,18 @@ export function ListProvider({ children }) {
 			value={{
 				lists,
 				tasks,
+				comments,
+				selectedList,
+				setSelectedList,
+				selectedTask,
+				setSelectedTask,
 				setTasks,
 				completeTask,
 				createNewList,
 				deleteList,
 				createNewTask,
 				deleteTask,
-				selectedList,
-				setSelectedList,
+				createNewComment,
 			}}
 		>
 			{children}
