@@ -13,10 +13,10 @@ import { Input, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { useList } from "../Context/ListContext";
 
 export default function ListsList() {
-	const [newListTitle, setNewListTitle] = useState();
-	const [newTaskTitle, setNewTaskTitle] = useState();
-	const [newTaskDesc, setNewTaskDesc] = useState();
-	const [newCommentText, setNewCommentText] = useState();
+	// const [newListTitle, setNewListTitle] = useState();
+	// const [newTaskTitle, setNewTaskTitle] = useState();
+	// const [newTaskDesc, setNewTaskDesc] = useState();
+	// const [newCommentText, setNewCommentText] = useState();
 
 	//uses ListContext:
 	const lists = useList().lists;
@@ -34,6 +34,14 @@ export default function ListsList() {
 	const deleteTask = useList().deleteTask;
 	const createNewComment = useList().createNewComment;
 	const deleteComment = useList().deleteComment;
+	const newListTitle = useList().newListTitle
+	const setNewListTitle  = useList().setNewListTitle
+	const newTaskTitle  = useList().newTaskTitle
+	const setNewTaskTitle  = useList().setNewTaskTitle
+	const newTaskDesc  = useList().newTaskDesc
+	const setNewTaskDesc  = useList().setNewTaskDesc
+	const newCommentText  = useList().newCommentText
+	const setNewCommentText = useList().setNewCommentText;
 
 	if (!lists) return null;
 
@@ -72,7 +80,6 @@ export default function ListsList() {
 					// isActive="true"
 					outline="none"
 					onClick={() => {
-						// setList(loadedList);
 						setSelectedList(loadedList);
 						setTasks(loadedList.tasks);
 					}}

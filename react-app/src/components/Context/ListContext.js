@@ -34,7 +34,7 @@ function reducer(state, action) {
 		case actions.ADD_COMMENT:
 			return { ...state, comments: action.value };
 		case actions.DELETE_COMMENT:
-				return { ...state };
+			return { ...state };
 		default:
 			return state;
 	}
@@ -51,6 +51,10 @@ export function ListProvider({ children }) {
 		{ task: "default task", comments: [{ title: "default task" }] },
 	]);
 	const [selectedComment, setSelectedComment] = useState([]);
+	const [newListTitle, setNewListTitle] = useState();
+	const [newTaskTitle, setNewTaskTitle] = useState();
+	const [newTaskDesc, setNewTaskDesc] = useState();
+	const [newCommentText, setNewCommentText] = useState();
 
 	const initialValue = { lists, tasks, comments };
 	const [state, dispatch] = useReducer(reducer, initialValue); //add initial state to have current lists
@@ -66,14 +70,13 @@ export function ListProvider({ children }) {
 		}
 		fetchData();
 	}, [state]);
-	
+
 	//tasks updater
 	useEffect(() => {
 		async function fetchTasksData() {
 			const response = await fetch(`/lists/${selectedList.id}/tasks`);
 			const responseData = await response.json();
 			setTasks(responseData.tasks);
-
 		}
 		fetchTasksData();
 	}, [state]);
@@ -84,14 +87,16 @@ export function ListProvider({ children }) {
 			console.log(
 				`In useEffect updater for comments: /lists/${selectedList.id}/tasks/${selectedTask.id}/comments`
 			);
-			const response = await fetch(`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments`);
+			const response = await fetch(
+				`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments`
+			);
 			// const response = await fetch(`/lists/1/tasks/1/comments`);
 			const responseData = await response.json();
 			console.log("responseData.comments", responseData.comments);
 			setComments(responseData.comments);
 		}
 		fetchCommentsData();
-		console.log("New comments set after useEffect:", comments)
+		console.log("New comments set after useEffect:", comments);
 	}, [state]);
 
 	// List methods
@@ -152,21 +157,18 @@ export function ListProvider({ children }) {
 	function completeTask(taskId) {
 		setSelectedList();
 	}
-	
+
 	//Comment methods
 	async function createNewComment(taskId, text) {
-		const response = await fetch(
-			`/lists/${selectedList.id}/tasks/${taskId}`,
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					text,
-				}),
-			}
-		);
+		const response = await fetch(`/lists/${selectedList.id}/tasks/${taskId}`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				text,
+			}),
+		});
 		const newCommentResponseData = await response.json();
 		// console.log("NEW COMMENT RESPONSE DATA in useEffect", newCommentResponseData)
 		return dispatch({
@@ -188,7 +190,15 @@ export function ListProvider({ children }) {
 		dispatch({ type: actions.DELETE_COMMENT });
 		return await response.json();
 	}
-	
+
+	//new List handling
+	const updateNewListTitle = (e) => {
+		setNewListTitle(e.target.value);
+	};
+	const createNewListHandler = () => {
+		createNewList(newListTitle);
+	};
+
 	// const values = {
 	// 	lists,
 	// 	completeTask,
@@ -217,6 +227,18 @@ export function ListProvider({ children }) {
 				deleteTask,
 				createNewComment,
 				deleteComment,
+				newListTitle,
+				setNewListTitle,
+				updateNewListTitle,
+				createNewListHandler,
+				newListTitle,
+				setNewListTitle,
+				newTaskTitle,
+				setNewTaskTitle,
+				newTaskDesc,
+				setNewTaskDesc,
+				newCommentText,
+				setNewCommentText,
 			}}
 		>
 			{children}

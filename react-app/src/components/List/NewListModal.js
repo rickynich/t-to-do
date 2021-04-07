@@ -2,12 +2,26 @@ import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/modal";
-import React from "react"
-function NewListModal(props) {
+import {
+	Modal,
+	ModalBody,
+	ModalCloseButton,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+	ModalOverlay,
+} from "@chakra-ui/modal";
+import React from "react";
+
+//context
+import { useList } from "../Context/ListContext";
+
+function NewListModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-    const { createNewListHandler } = props
-    console.log("props", props)
+	const newListTitle = useList().newListTitle;
+    const updateNewListTitle = useList().updateNewListTitle;
+	const createNewListHandler = useList().createNewListHandler;
+    
 	return (
 		<>
 			<Button onClick={onOpen}>Create New List</Button>
@@ -20,7 +34,13 @@ function NewListModal(props) {
 					<ModalBody pb={6}>
 						<FormControl>
 							<FormLabel>List title</FormLabel>
-							<Input placeholder="List title" />
+							<Input
+								type="text"
+								name="title"
+								placeholder="List title"
+								value={newListTitle}
+								onChange={updateNewListTitle}
+							/>
 						</FormControl>
 					</ModalBody>
 					<ModalFooter>
