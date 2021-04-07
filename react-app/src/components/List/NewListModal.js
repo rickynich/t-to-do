@@ -11,6 +11,7 @@ import {
 	ModalHeader,
 	ModalOverlay,
 } from "@chakra-ui/modal";
+import { Popover, PopoverContent, PopoverHeader, PopoverTrigger } from "@chakra-ui/popover";
 import React from "react";
 
 //context
@@ -44,9 +45,16 @@ function NewListModal() {
 						</FormControl>
 					</ModalBody>
 					<ModalFooter>
-						<Button onClick={createNewListHandler} mr={3}>
-							Create
-						</Button>
+						<Popover>
+							<PopoverTrigger>
+								<Button onClick={createNewListHandler} mr={3}>
+									Create
+								</Button>
+							</PopoverTrigger>
+							<PopoverContent>
+								<PopoverHeader>New list created!</PopoverHeader>
+							</PopoverContent>
+						</Popover>
 						<Button onClick={onClose}>Cancel</Button>
 					</ModalFooter>
 				</ModalContent>

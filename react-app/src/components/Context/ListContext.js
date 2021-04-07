@@ -198,6 +198,24 @@ export function ListProvider({ children }) {
 	const createNewListHandler = () => {
 		createNewList(newListTitle);
 	};
+		//new Task handling
+	const updateNewTaskTitle = (e) => {
+		setNewTaskTitle(e.target.value);
+	};
+	const updateNewTaskDesc = (e) => {
+		setNewTaskDesc(e.target.value);
+	};
+	const createNewTaskHandler = () => {
+		createNewTask(selectedList.id, newTaskTitle, newTaskDesc);
+	};
+
+	//new Comment handling
+	const updateNewCommentText = (e) => {
+		setNewCommentText(e.target.value);
+	};
+	const createNewCommentHandler = () => {
+		createNewComment(selectedTask.id, newCommentText);
+	};
 
 	// const values = {
 	// 	lists,
@@ -231,12 +249,13 @@ export function ListProvider({ children }) {
 				setNewListTitle,
 				updateNewListTitle,
 				createNewListHandler,
-				newListTitle,
-				setNewListTitle,
 				newTaskTitle,
 				setNewTaskTitle,
 				newTaskDesc,
 				setNewTaskDesc,
+				updateNewTaskTitle,
+				updateNewTaskDesc,
+				createNewTaskHandler,
 				newCommentText,
 				setNewCommentText,
 			}}
