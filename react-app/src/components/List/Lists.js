@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
+
+//components
 import TaskComponents from "../Task/Tasks";
+import NewListModal from "./NewListModal"
 
 //Chakra
 import { Button } from "@chakra-ui/button";
-import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
-import { Input } from "@chakra-ui/react";
+import { Box, Container, Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
+import { Input, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
 //context
 import { useList } from "../Context/ListContext";
@@ -34,7 +37,7 @@ export default function ListsList() {
 
 	if (!lists) return null;
 
-		//new List handling
+	//new List handling
 	const updateNewListTitle = (e) => {
 		setNewListTitle(e.target.value);
 	};
@@ -73,7 +76,6 @@ export default function ListsList() {
 						setSelectedList(loadedList);
 						setTasks(loadedList.tasks);
 					}}
-
 				>
 					{loadedList.title}
 				</Button>
@@ -87,35 +89,41 @@ export default function ListsList() {
 			</GridItem>
 		);
 	});
-	
+
 	const taskComponents =
 		tasks &&
 		tasks.map((task) => {
 			return (
-				<Flex>
-					<Button id={task.id} onClick={() => {
-						setSelectedTask(task);
-						setComments(task.comments)
-					}}>
-						{task.title}
-					</Button>
-					<Button
-						onClick={() => {
-							deleteTask(task.id);
-						}}
-					>
-						Delete
-					</Button>
-				</Flex>
+				<GridItem>
+					<Menu>
+						<MenuButton
+							id={task.id}
+							onClick={() => {
+								setSelectedTask(task);
+								setComments(task.comments);
+							}}
+						>
+							{task.title}
+						</MenuButton>
+						<MenuList>
+							<MenuItem> {task.desc}</MenuItem>
+						</MenuList>
+						<Button
+							onClick={() => {
+								deleteTask(task.id);
+							}}
+						>
+							Delete
+						</Button>
+					</Menu>
+				</GridItem>
 			);
 		});
-	
+
 	const commentComponents = comments.map((comment) => {
 		return (
 			<Flex>
-				<Text id={comment.id}>
-					{comment.text}
-				</Text>
+				<Text id={comment.id}>{comment.text}</Text>
 				<Button
 					onClick={() => {
 						deleteComment(comment.id);
@@ -125,9 +133,7 @@ export default function ListsList() {
 				</Button>
 			</Flex>
 		);
-		});
-
-
+	});
 
 	return (
 		<Grid
@@ -149,9 +155,10 @@ export default function ListsList() {
 				<Button size="small" onClick={createNewListHandler}>
 					Add New List
 				</Button>
+				<NewListModal props={createNewListHandler}/>
 				{listComponents}
 			</Flex>
-			<GridItem colSpan={2} width="30vh" alignContent="center">
+			<GridItem colSpan={2} width="50vh" alignContent="center">
 				<Text>Tasks:</Text>
 				<Input
 					type="text"
@@ -172,7 +179,7 @@ export default function ListsList() {
 				<Button size="small" onClick={createNewTaskHandler}>
 					Add New Task
 				</Button>
-				{taskComponents}
+				<Container>{taskComponents}</Container>
 			</GridItem>
 			<Flex direction="column" width="30vh">
 				<Text>Comments:</Text>
