@@ -65,6 +65,9 @@ export function ListProvider({ children }) {
 			const response = await fetch("/lists/");
 			const responseData = await response.json();
 			setLists(responseData.lists);
+			setTasks(responseData.tasks); //for all tasks 
+			// setComments(responseData.comments); //for all comments 
+			console.log("INITIAL LOAD. response data :", responseData);
 			// setSelectedList(lists[0])
 			// setTasks(selectedList.tasks); // set comments next
 		}
@@ -154,7 +157,7 @@ export function ListProvider({ children }) {
 		return await response.json();
 	}
 	//INCOMPLETE:
-	function completeTask(taskId) {
+	function markTaskAsComplete(taskId) {
 		setSelectedList();
 	}
 
@@ -238,11 +241,11 @@ export function ListProvider({ children }) {
 				setSelectedTask,
 				// selectedComment,
 				// setSelectedComment,
-				completeTask,
 				createNewList,
 				deleteList,
 				createNewTask,
 				deleteTask,
+				markTaskAsComplete,
 				createNewComment,
 				deleteComment,
 				newListTitle,

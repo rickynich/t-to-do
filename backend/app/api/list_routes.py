@@ -18,7 +18,9 @@ def validation_errors_to_error_messages(validation_errors):
 @list_routes.route('/', methods=["GET"])
 def lists():
     lists = List.query.all()
-    return {"lists": [list.to_dict() for list in lists]}
+    tasks = Task.query.all()
+    # comments = Comment.query.all() "comments": [comment.to_dict() for comment in comments]
+    return {"lists": [list.to_dict() for list in lists], "tasks": [task.to_dict() for task in tasks]}
 
 @list_routes.route('/', methods=["POST"])
 def makeNewList():

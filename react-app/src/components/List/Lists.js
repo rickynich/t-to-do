@@ -9,17 +9,13 @@ import NewTaskModal from "../Task/NewTaskModal";
 import { Button } from "@chakra-ui/button";
 import { Box, Container, Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
 import { Input, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { CheckIcon } from "@chakra-ui/icons";
 
 //context
 import { useList } from "../Context/ListContext";
 
 
 export default function ListsList() {
-	// const [newListTitle, setNewListTitle] = useState();
-	// const [newTaskTitle, setNewTaskTitle] = useState();
-	// const [newTaskDesc, setNewTaskDesc] = useState();
-	// const [newCommentText, setNewCommentText] = useState();
-
 	//uses ListContext:
 	const lists = useList().lists;
 	const tasks = useList().tasks;
@@ -34,6 +30,7 @@ export default function ListsList() {
 	const deleteList = useList().deleteList;
 	const createNewTask = useList().createNewTask;
 	const deleteTask = useList().deleteTask;
+	const markTaskAsComplete = useList().markTaskAsComplete;
 	const createNewComment = useList().createNewComment;
 	const deleteComment = useList().deleteComment;
 	const newListTitle = useList().newListTitle
@@ -46,7 +43,6 @@ export default function ListsList() {
 	const setNewCommentText = useList().setNewCommentText;
 
 	if (!lists) return null;
-
 
 
 	const listComponents = lists.map((loadedList) => {
@@ -92,6 +88,14 @@ export default function ListsList() {
 						<MenuList>
 							<MenuItem> {task.desc}</MenuItem>
 						</MenuList>
+						<Button
+							onClick={() => {
+								markTaskAsComplete(task.id);
+							}}
+						>
+							<CheckIcon/>
+							Mark As Complete
+						</Button>
 						<Button
 							onClick={() => {
 								deleteTask(task.id);
