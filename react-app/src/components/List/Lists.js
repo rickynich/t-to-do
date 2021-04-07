@@ -41,11 +41,20 @@ export default function ListsList() {
 	// const setNewTaskDesc  = useList().setNewTaskDesc
 	const newCommentText = useList().newCommentText;
 	const setNewCommentText = useList().setNewCommentText;
-	const updateNewCommentText = useList().updateCommentText;
+	const updateNewCommentText = useList().updateNewCommentText;
 	const createNewCommentText = useList().createNewCommentText;
-	const createNewCommentHandler = useList().createNewCommentText;
+	const createNewCommentHandler = useList().createNewCommentHandler;
 
 	if (!lists) return null;
+
+	// //new Comment handling
+	// const updateNewCommentText = (e) => {
+	// 	setNewCommentText(e.target.value);
+	// };
+	// const createNewCommentHandler = () => {
+	// 	createNewComment(selectedTask.id, newCommentText);
+	// };
+
 
 	const listComponents = lists.map((loadedList) => {
 		return (
@@ -114,6 +123,7 @@ export default function ListsList() {
 	const commentComponents =
 		comments &&
 		comments.map((comment) => {
+			// console.log("COMMENT IN commentComponents!!", comment)
 			return (
 				<Flex>
 					<Text id={comment.id}>{comment.text}</Text>

@@ -26,7 +26,7 @@ import { useList } from "../Context/ListContext";
 function NewCommentModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const newCommentText= useList().newCommentText;
-	const updateNewCommentText = useList().updateNewCommentTitle;
+	const updateNewCommentText = useList().updateNewCommentText;
 	const createNewCommentHandler = useList().createNewCommentHandler;
 
 	return (

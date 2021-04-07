@@ -203,6 +203,7 @@ export function ListProvider({ children }) {
 			value: newCommentResponseData.comments,
 		});
 	}
+	
 	async function deleteComment(commentId) {
 		// console.log("List deleted (log from list context module). listId: ", listId)
 		const response = await fetch(
