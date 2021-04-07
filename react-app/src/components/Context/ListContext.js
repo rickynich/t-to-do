@@ -31,6 +31,8 @@ function reducer(state, action) {
 			return { ...state, tasks: action.value };
 		case actions.DELETE_TASK:
 			return { ...state };
+		case actions.UPDATE_TASK:
+			return { ...state };
 		case actions.ADD_COMMENT:
 			return { ...state, comments: action.value };
 		case actions.DELETE_COMMENT:
@@ -59,7 +61,7 @@ export function ListProvider({ children }) {
 	const initialValue = { lists, tasks, comments };
 	const [state, dispatch] = useReducer(reducer, initialValue); //add initial state to have current lists
 
-	//initial load and state change
+	//initial load
 	useEffect(() => {
 		async function fetchData() {
 			const response = await fetch("/lists/");
@@ -68,8 +70,19 @@ export function ListProvider({ children }) {
 			setTasks(responseData.tasks); //for all tasks 
 			// setComments(responseData.comments); //for all comments 
 			console.log("INITIAL LOAD. response data :", responseData);
-			// setSelectedList(lists[0])
-			// setTasks(selectedList.tasks); // set comments next
+		}
+		fetchData();
+	}, []);
+
+	//for state change
+	useEffect(() => {
+		async function fetchData() {
+			const response = await fetch("/lists/");
+			const responseData = await response.json();
+			setLists(responseData.lists);
+			// setTasks(responseData.tasks); //for all tasks 
+			// setComments(responseData.comments); //for all comments 
+			console.log("INITIAL LOAD. response data :", responseData);
 		}
 		fetchData();
 	}, [state]);
@@ -80,27 +93,28 @@ export function ListProvider({ children }) {
 			const response = await fetch(`/lists/${selectedList.id}/tasks`);
 			const responseData = await response.json();
 			setTasks(responseData.tasks);
+			setComments(responseData.tasks.comments);
 		}
 		fetchTasksData();
 	}, [state]);
 
 	//comments updater
-	useEffect(() => {
-		async function fetchCommentsData() {
-			console.log(
-				`In useEffect updater for comments: /lists/${selectedList.id}/tasks/${selectedTask.id}/comments`
-			);
-			const response = await fetch(
-				`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments`
-			);
-			// const response = await fetch(`/lists/1/tasks/1/comments`);
-			const responseData = await response.json();
-			console.log("responseData.comments", responseData.comments);
-			setComments(responseData.comments);
-		}
-		fetchCommentsData();
-		console.log("New comments set after useEffect:", comments);
-	}, [state]);
+	// useEffect(() => {
+	// 	async function fetchCommentsData() {
+	// 		console.log(
+	// 			`In useEffect updater for comments: /lists/${selectedList.id}/tasks/${selectedTask.id}/comments`
+	// 		);
+	// 		const response = await fetch(
+	// 			`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments`
+	// 		);
+	// 		// const response = await fetch(`/lists/1/tasks/1/comments`);
+	// 		const responseData = await response.json();
+	// 		console.log("responseData.comments", responseData.comments);
+	// 		setComments(responseData.comments);
+	// 	}
+	// 	fetchCommentsData();
+	// 	console.log("New comments set after useEffect:", comments);
+	// }, [state]);
 
 	// List methods
 	async function createNewList(title) {
@@ -146,7 +160,6 @@ export function ListProvider({ children }) {
 		});
 	}
 	async function deleteTask(taskId) {
-		// console.log("List deleted (log from list context module). listId: ", listId)
 		const response = await fetch(`/lists/${selectedList.id}/tasks/${taskId}`, {
 			method: "DELETE",
 			headers: {
@@ -156,9 +169,20 @@ export function ListProvider({ children }) {
 		dispatch({ type: actions.DELETE_TASK });
 		return await response.json();
 	}
-	//INCOMPLETE:
-	function markTaskAsComplete(taskId) {
-		setSelectedList();
+	
+	//for changing task status
+	async function markTaskAsComplete(taskId) {
+			const response = await fetch(`/lists/${selectedList.id}/tasks/${taskId}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					"status": true
+				}),
+		});
+		dispatch({ type: actions.UPDATE_TASK });
+		return await response.json();
 	}
 
 	//Comment methods
@@ -259,6 +283,8 @@ export function ListProvider({ children }) {
 				updateNewTaskTitle,
 				updateNewTaskDesc,
 				createNewTaskHandler,
+				updateNewCommentText,
+				createNewCommentHandler,
 				newCommentText,
 				setNewCommentText,
 			}}

@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 
 //components
 import TaskComponents from "../Task/Tasks";
-import NewListModal from "./NewListModal"
+import NewListModal from "./NewListModal";
 import NewTaskModal from "../Task/NewTaskModal";
+import NewCommentModal from "../Comments/NewCommentModal"
 
 //Chakra
 import { Button } from "@chakra-ui/button";
 import { Box, Container, Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
 import { Input, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-import { CheckIcon } from "@chakra-ui/icons";
+import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
 //context
 import { useList } from "../Context/ListContext";
-
 
 export default function ListsList() {
 	//uses ListContext:
@@ -33,17 +33,19 @@ export default function ListsList() {
 	const markTaskAsComplete = useList().markTaskAsComplete;
 	const createNewComment = useList().createNewComment;
 	const deleteComment = useList().deleteComment;
-	const newListTitle = useList().newListTitle
-	const setNewListTitle  = useList().setNewListTitle
-	const newTaskTitle  = useList().newTaskTitle
-	const setNewTaskTitle  = useList().setNewTaskTitle
-	const newTaskDesc  = useList().newTaskDesc
-	const setNewTaskDesc  = useList().setNewTaskDesc
-	const newCommentText  = useList().newCommentText
+	// const newListTitle = useList().newListTitle
+	// const setNewListTitle  = useList().setNewListTitle
+	// const newTaskTitle  = useList().newTaskTitle
+	// const setNewTaskTitle  = useList().setNewTaskTitle
+	// const newTaskDesc  = useList().newTaskDesc
+	// const setNewTaskDesc  = useList().setNewTaskDesc
+	const newCommentText = useList().newCommentText;
 	const setNewCommentText = useList().setNewCommentText;
+	const updateNewCommentText = useList().updateCommentText;
+	const createNewCommentText = useList().createNewCommentText;
+	const createNewCommentHandler = useList().createNewCommentText;
 
 	if (!lists) return null;
-
 
 	const listComponents = lists.map((loadedList) => {
 		return (
@@ -92,15 +94,16 @@ export default function ListsList() {
 							onClick={() => {
 								markTaskAsComplete(task.id);
 							}}
+							// add for on hover - "Mark task as complete"
 						>
-							<CheckIcon/>
-							Mark As Complete
+							<CheckIcon />
 						</Button>
 						<Button
 							onClick={() => {
 								deleteTask(task.id);
 							}}
 						>
+							<DeleteIcon />
 							Delete
 						</Button>
 					</Menu>
@@ -108,20 +111,28 @@ export default function ListsList() {
 			);
 		});
 
-	const commentComponents = comments.map((comment) => {
-		return (
-			<Flex>
-				<Text id={comment.id}>{comment.text}</Text>
-				<Button
-					onClick={() => {
-						deleteComment(comment.id);
-					}}
-				>
-					Delete
-				</Button>
-			</Flex>
-		);
-	});
+	const commentComponents =
+		comments &&
+		comments.map((comment) => {
+			return (
+				<Flex>
+					<Text id={comment.id}>{comment.text}</Text>
+					<Button
+					// for edit comment
+					>
+						<EditIcon />
+					</Button>
+					<Button
+						onClick={() => {
+							deleteComment(comment.id);
+						}}
+					>
+						<DeleteIcon />
+						Delete
+					</Button>
+				</Flex>
+			);
+		});
 
 	return (
 		<Grid
@@ -132,28 +143,28 @@ export default function ListsList() {
 		>
 			<Flex flexFlow="column wrap" align="space-between" width="30vh">
 				<Text>Lists:</Text>
-				<NewListModal/>
+				<NewListModal />
 				{listComponents}
 			</Flex>
 			<GridItem colSpan={2} width="50vh" alignContent="center">
 				<Text>Tasks:</Text>
-				<NewTaskModal/>
+				<NewTaskModal />
 				<Container>{taskComponents}</Container>
 			</GridItem>
 			<Flex direction="column" width="30vh">
 				<Text>Comments:</Text>
-				{/* <Input
+				<Input
 					type="text"
 					name="title"
-					// width="170px"
 					placeholder="New comment text here"
 					value={newCommentText}
 					onChange={updateNewCommentText}
 				></Input>
 				<Button size="small" onClick={createNewCommentHandler}>
 					Add New Comment
-				</Button> */}
-				{commentComponents}
+				</Button>
+				<NewCommentModal/>
+				<Container>{commentComponents}</Container>
 			</Flex>
 		</Grid>
 	);

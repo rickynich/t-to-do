@@ -80,8 +80,7 @@ def delete_task(list_id, task_id):
         return "Task deleted"
     return {'errors': "There was an error with your delete request"}, 400
 
-# Get all comments for a list:
-#                   /1              /tasks/1        /comments
+# Get all comments for a task:
 @list_routes.route('/<int:list_id>/tasks/<int:task_id>/comments)', methods=["GET"])
 def get_all_comments(list_id, task_id):
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~IN GET ALL COMMENTS! {}~~~~~~~~~~~~~~'.format(task_id))
@@ -90,7 +89,7 @@ def get_all_comments(list_id, task_id):
         return {"comments": [comment.to_dict() for comment in comments]}
     return {'errors': "There was an error with your GET request for all comments"}, 400
 
-# Adds a new comment to a list: 
+# Adds a new comment to a task: 
 @list_routes.route('/<int:list_id>/tasks/<int:task_id>', methods=["POST"])
 def make_new_comment(list_id, task_id):
     print("IN MAKE NEW COMMENT~~~~~~~~~~~~~~~", task_id)
@@ -98,14 +97,18 @@ def make_new_comment(list_id, task_id):
         task = Task.query.get(task_id)
         form = CreateCommentForm()
         newComment = Comment(task_id = task.id, text = form.data['text'])
-        print('**************************new comment: {}'.format(newComment))
+        print('**************************new comment: {}, form data: {}'.format(newComment, form.data))
         db.session.add(newComment)
         db.session.commit()
         return task.to_dict()
     return {'errors': "There was an error with your POST request for Coment add"}, 400
 
+# Edits a comment 
+# @list_routes.route('/<int:list_id>/tasks/<int:task_id>', methods=["POST"])
+# def edit_comment(list_id, task_id):
 
-# Delete a comment from a list: 
+
+# Delete a comment from a task: 
 @list_routes.route('/<int:list_id>/tasks/<int:task_id>/comments/<int:comment_id>', methods=["DELETE"])
 def delete_comment(list_id, task_id, comment_id):
     if comment_id:
