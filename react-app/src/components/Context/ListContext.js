@@ -61,17 +61,19 @@ export function ListProvider({ children }) {
 			const response = await fetch("/lists/");
 			const responseData = await response.json();
 			setLists(responseData.lists);
-			// setComments(selectedList.tasks); // set comments next
+			// setSelectedList(lists[0])
+			// setTasks(selectedList.tasks); // set comments next
 		}
 		fetchData();
 	}, [state]);
-
+	
 	//tasks updater
 	useEffect(() => {
 		async function fetchTasksData() {
 			const response = await fetch(`/lists/${selectedList.id}/tasks`);
 			const responseData = await response.json();
 			setTasks(responseData.tasks);
+
 		}
 		fetchTasksData();
 	}, [state]);
@@ -83,6 +85,7 @@ export function ListProvider({ children }) {
 				`In useEffect updater for comments: /lists/${selectedList.id}/tasks/${selectedTask.id}/comments`
 			);
 			const response = await fetch(`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments`);
+			// const response = await fetch(`/lists/1/tasks/1/comments`);
 			const responseData = await response.json();
 			console.log("responseData.comments", responseData.comments);
 			setComments(responseData.comments);

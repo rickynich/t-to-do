@@ -3,7 +3,7 @@ import TaskComponents from "../Task/Tasks";
 
 //Chakra
 import { Button } from "@chakra-ui/button";
-import { Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
+import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
 import { Input } from "@chakra-ui/react";
 
 //context
@@ -16,23 +16,23 @@ export default function ListsList() {
 	const [newCommentText, setNewCommentText] = useState();
 
 	//uses ListContext:
-	const loadedLists = useList().lists;
+	const lists = useList().lists;
+	const tasks = useList().tasks;
+	const setTasks = useList().setTasks;
+	const comments = useList().comments;
+	const setComments = useList().setComments;
 	const selectedList = useList().selectedList;
 	const setSelectedList = useList().setSelectedList;
 	const selectedTask = useList().selectedTask;
 	const setSelectedTask = useList().setSelectedTask;
-	const tasks = useList().tasks;
-	const setTasks = useList().setTasks;
 	const createNewList = useList().createNewList;
 	const deleteList = useList().deleteList;
 	const createNewTask = useList().createNewTask;
 	const deleteTask = useList().deleteTask;
 	const createNewComment = useList().createNewComment;
 	const deleteComment = useList().deleteComment;
-	const comments = useList().comments;
-	const setComments = useList().setComments;
 
-	if (!loadedLists) return null;
+	if (!lists) return null;
 
 		//new List handling
 	const updateNewListTitle = (e) => {
@@ -61,16 +61,19 @@ export default function ListsList() {
 		createNewComment(selectedTask.id, newCommentText);
 	};
 
-	const listComponents = loadedLists.map((loadedList) => {
+	const listComponents = lists.map((loadedList) => {
 		return (
 			<GridItem>
 				<Button
 					id={loadedList.id}
+					// isActive="true"
+					outline="none"
 					onClick={() => {
 						// setList(loadedList);
 						setSelectedList(loadedList);
 						setTasks(loadedList.tasks);
 					}}
+
 				>
 					{loadedList.title}
 				</Button>
@@ -131,7 +134,7 @@ export default function ListsList() {
 			justifyContent="center"
 			width="100%"
 			gridAutoColumns="auto"
-			gridTemplateColumns="repeat(3, 1fr)"
+			gridTemplateColumns="repeat(4, 1fr)"
 		>
 			<Flex flexFlow="column wrap" align="space-between" width="30vh">
 				<Text>Lists:</Text>
@@ -146,9 +149,9 @@ export default function ListsList() {
 				<Button size="small" onClick={createNewListHandler}>
 					Add New List
 				</Button>
-				<Flex direction="column">{listComponents}</Flex>
+				{listComponents}
 			</Flex>
-			<Flex direction="column" width="30vh">
+			<GridItem colSpan={2} width="30vh" alignContent="center">
 				<Text>Tasks:</Text>
 				<Input
 					type="text"
@@ -169,8 +172,8 @@ export default function ListsList() {
 				<Button size="small" onClick={createNewTaskHandler}>
 					Add New Task
 				</Button>
-				<Flex direction="column">{taskComponents}</Flex>
-			</Flex>
+				{taskComponents}
+			</GridItem>
 			<Flex direction="column" width="30vh">
 				<Text>Comments:</Text>
 				<Input
@@ -184,7 +187,7 @@ export default function ListsList() {
 				<Button size="small" onClick={createNewCommentHandler}>
 					Add New Comment
 				</Button>
-				<Flex direction="column">{commentComponents}</Flex>
+				{commentComponents}
 			</Flex>
 		</Grid>
 	);

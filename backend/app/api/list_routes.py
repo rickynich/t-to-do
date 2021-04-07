@@ -61,10 +61,8 @@ def get_all_tasks(list_id):
 def make_new_task(list_id):
     if list_id:
         list = List.query.get(list_id)
-        print("List:", list)
         form = CreateTaskForm()
         newTask = Task(list_id = list.id, title = form.data['title'], desc = form.data['desc'], status = False)
-        print('new task: {}'.format(newTask))
         db.session.add(newTask)
         db.session.commit()
         return list.to_dict()
@@ -81,6 +79,7 @@ def delete_task(list_id, task_id):
     return {'errors': "There was an error with your delete request"}, 400
 
 # Get all comments for a list:
+#                   /1              /tasks/1        /comments
 @list_routes.route('/<int:list_id>/tasks/<int:task_id>/comments)', methods=["GET"])
 def get_all_comments(list_id, task_id):
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~IN GET ALL COMMENTS! {}~~~~~~~~~~~~~~'.format(task_id))
