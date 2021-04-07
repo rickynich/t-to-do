@@ -42,7 +42,7 @@ function NewCommentModal() {
 							<FormLabel>Comment text</FormLabel>
 							<Input
 								type="text"
-								name="desc"
+								name="text"
 								placeholder="Comment description"
 								value={newCommentText}
 								onChange={updateNewCommentText}

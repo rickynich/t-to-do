@@ -197,7 +197,7 @@ export function ListProvider({ children }) {
 			}),
 		});
 		const newCommentResponseData = await response.json();
-		// console.log("NEW COMMENT RESPONSE DATA in useEffect", newCommentResponseData)
+		console.log("NEW COMMENT RESPONSE DATA in useEffect", newCommentResponseData)
 		return dispatch({
 			type: actions.ADD_COMMENT,
 			value: newCommentResponseData.comments,
