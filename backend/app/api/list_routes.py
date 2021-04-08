@@ -45,10 +45,6 @@ def deleteList(list_id):
         return "List deleted"
     return {'errors': "There was an error with your delete request"}, 400
 
-@list_routes.route('/<int:id>')
-def get_a_list(id):
-    list = List.query.get(id)
-    return list.to_dict()
 
 # Get all tasks for a list:
 @list_routes.route('/<int:list_id>/tasks', methods=["GET"])
@@ -60,8 +56,8 @@ def get_all_tasks(list_id):
 # Get an individual task:
 @list_routes.route('/<int:list_id>/tasks/<int:task_id>', methods=["GET"])
 def get_a_task(list_id, task_id):
-    if list_id:
-        task = Task.query.get(id)
+    if task_id:
+        task = Task.query.get(task_id)
         return task.to_dict()
 
 

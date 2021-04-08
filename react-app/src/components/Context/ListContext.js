@@ -93,20 +93,20 @@ export function ListProvider({ children }) {
 			const response = await fetch(`/lists/${selectedList.id}/tasks`);
 			const responseData = await response.json();
 			setTasks(responseData.tasks);
-			setComments(responseData.tasks.comments);
-
+			
 			console.log("SELECTED TASK", selectedTask)
 			console.log("SELECTED TASK", selectedTask.id)
 			// try getting an individual task from the backend
 			const response2 = await fetch(
 				`/lists/${selectedList.id}/tasks/${selectedTask.id}`
-			);
-			const responseData2 = await response2.json();
-			console.log("FOR A SINGLE TASK responseDate2", responseData2);
-			console.log(
-				"responseData.tasks",
-				responseData.tasks, responseData.tasks[0].comments[0].text
-			);
+				);
+				const responseData2 = await response2.json();
+				console.log("FOR A SINGLE TASK responseDate2", responseData2);
+			// console.log(
+			// "responseData.tasks",
+			// responseData.tasks, responseData.tasks[0].comments[0].text
+			// );
+			setComments(responseData2.comments);
 			console.log("Comments are now .... ", comments)
 		}
 		fetchTasksData();
