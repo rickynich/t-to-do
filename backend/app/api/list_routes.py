@@ -14,7 +14,7 @@ def validation_errors_to_error_messages(validation_errors):
             errorMessages.append(f"{field} : {error}")
     return errorMessages
 
-
+# Get all tasks and listsfor home page
 @list_routes.route('/', methods=["GET"])
 def lists():
     lists = List.query.all()
@@ -22,6 +22,7 @@ def lists():
     # comments = Comment.query.all() "comments": [comment.to_dict() for comment in comments]
     return {"lists": [list.to_dict() for list in lists], "tasks": [task.to_dict() for task in tasks]}
 
+# Create a new list
 @list_routes.route('/', methods=["POST"])
 def makeNewList():
     form = CreateListForm()
@@ -33,6 +34,7 @@ def makeNewList():
     return newList.to_dict()
     # return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
+# delete a list
 @list_routes.route('/<int:list_id>', methods=["DELETE"])
 def deleteList(list_id):
     if list_id:
@@ -82,6 +84,17 @@ def delete_task(list_id, task_id):
         db.session.commit()
         return "Task deleted"
     return {'errors': "There was an error with your delete request"}, 400
+
+# Updates the status of a task
+@list_routes.route('/<int:list_id>/tasks/<int:task_id>/toggle', methods=["PUT"])
+def change_task_status(list_id, task_id):
+    print("IN TASK STATUS TOGGLER~~~")
+    if task_id:
+        task = Task.query.get(task_id)
+        task.status = not task.status
+        db.session.commit()
+        return task.to_dict()
+    return {'errors': 'There was an error with your request'}, 400
 
 # Get all comments for a task:
 @list_routes.route('/<int:list_id>/tasks/<int:task_id>/comments)', methods=["GET"])

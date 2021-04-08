@@ -67,22 +67,18 @@ export function ListProvider({ children }) {
 			const response = await fetch("/lists/");
 			const responseData = await response.json();
 			setLists(responseData.lists);
-			setTasks(responseData.tasks); //for all tasks 
-			// setComments(responseData.comments); //for all comments 
+			setTasks(responseData.tasks); //for all tasks
 			console.log("INITIAL LOAD. response data :", responseData);
 		}
 		fetchData();
 	}, []);
 
-	//for state change
+	//updates list 
 	useEffect(() => {
 		async function fetchData() {
 			const response = await fetch("/lists/");
 			const responseData = await response.json();
 			setLists(responseData.lists);
-			// setTasks(responseData.tasks); //for all tasks 
-			// setComments(responseData.comments); //for all comments 
-			// console.log("INITIAL LOAD. response data :", responseData);
 		}
 		fetchData();
 	}, [state]);
@@ -90,45 +86,20 @@ export function ListProvider({ children }) {
 	//tasks updater
 	useEffect(() => {
 		async function fetchTasksData() {
+			//gets all tasks
 			const response = await fetch(`/lists/${selectedList.id}/tasks`);
 			const responseData = await response.json();
 			setTasks(responseData.tasks);
-			
-			console.log("SELECTED TASK", selectedTask)
-			console.log("SELECTED TASK", selectedTask.id)
-			// try getting an individual task from the backend
+
+			//gets an individual task from the backend
 			const response2 = await fetch(
 				`/lists/${selectedList.id}/tasks/${selectedTask.id}`
-				);
-				const responseData2 = await response2.json();
-				console.log("FOR A SINGLE TASK responseDate2", responseData2);
-			// console.log(
-			// "responseData.tasks",
-			// responseData.tasks, responseData.tasks[0].comments[0].text
-			// );
+			);
+			const responseData2 = await response2.json();
 			setComments(responseData2.comments);
-			console.log("Comments are now .... ", comments)
 		}
 		fetchTasksData();
 	}, [state]);
-
-	//comments updater
-	// useEffect(() => {
-	// 	async function fetchCommentsData() {
-	// 		console.log(
-	// 			`In useEffect updater for comments: /lists/${selectedList.id}/tasks/${selectedTask.id}/comments`
-	// 		);
-	// 		const response = await fetch(
-	// 			`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments`
-	// 		);
-	// 		// const response = await fetch(`lists/1/1`);
-	// 		const responseData = await response.json();
-	// 		console.log("responseData.comments", responseData.comments);
-	// 		setComments(responseData.comments);
-	// 	}
-	// 	fetchCommentsData();
-	// 	console.log("New comments set after useEffect:", comments);
-	// }, [state]);
 
 	// List methods
 	async function createNewList(title) {
@@ -183,17 +154,16 @@ export function ListProvider({ children }) {
 		dispatch({ type: actions.DELETE_TASK });
 		return await response.json();
 	}
-	
 	//for changing task status
 	async function markTaskAsComplete(taskId) {
-			const response = await fetch(`/lists/${selectedList.id}/tasks/${taskId}`, {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					"status": true
-				}),
+		const response = await fetch(`/lists/${selectedList.id}/tasks/${taskId}`, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				status: true,
+			}),
 		});
 		dispatch({ type: actions.UPDATE_TASK });
 		return await response.json();
@@ -211,13 +181,11 @@ export function ListProvider({ children }) {
 			}),
 		});
 		const newCommentResponseData = await response.json();
-		console.log("NEW COMMENT RESPONSE DATA in useEffect", newCommentResponseData)
 		return dispatch({
 			type: actions.ADD_COMMENT,
 			value: newCommentResponseData.comments,
 		});
 	}
-	
 	async function deleteComment(commentId) {
 		// console.log("List deleted (log from list context module). listId: ", listId)
 		const response = await fetch(
@@ -240,7 +208,7 @@ export function ListProvider({ children }) {
 	const createNewListHandler = () => {
 		createNewList(newListTitle);
 	};
-		//new Task handling
+	//new Task handling
 	const updateNewTaskTitle = (e) => {
 		setNewTaskTitle(e.target.value);
 	};

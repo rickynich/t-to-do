@@ -9,13 +9,23 @@ import NewCommentModal from "../Comments/NewCommentModal";
 //Chakra
 import { Button } from "@chakra-ui/button";
 import { Box, Container, Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
-import { Input, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import {
+	Collapse,
+	Input,
+	Menu,
+	MenuButton,
+	MenuItem,
+	MenuList,
+} from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { useDisclosure } from "@chakra-ui/hooks";
 
 //context
 import { useList } from "../Context/ListContext";
 
 export default function ListsList() {
+	const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
+
 	//uses ListContext:
 	const lists = useList().lists;
 	const tasks = useList().tasks;
@@ -33,89 +43,77 @@ export default function ListsList() {
 	const markTaskAsComplete = useList().markTaskAsComplete;
 	const createNewComment = useList().createNewComment;
 	const deleteComment = useList().deleteComment;
-	// const newListTitle = useList().newListTitle
-	// const setNewListTitle  = useList().setNewListTitle
-	// const newTaskTitle  = useList().newTaskTitle
-	// const setNewTaskTitle  = useList().setNewTaskTitle
-	// const newTaskDesc  = useList().newTaskDesc
-	// const setNewTaskDesc  = useList().setNewTaskDesc
 	const newCommentText = useList().newCommentText;
 	const setNewCommentText = useList().setNewCommentText;
 	const updateNewCommentText = useList().updateNewCommentText;
 	const createNewCommentText = useList().createNewCommentText;
 	const createNewCommentHandler = useList().createNewCommentHandler;
-	
+
 	if (!lists) return null;
 
-	// //new Comment handling
-	// const updateNewCommentText = (e) => {
-	// 	setNewCommentText(e.target.value);
-	// };
-	// const createNewCommentHandler = () => {
-	// 	createNewComment(selectedTask.id, newCommentText);
-	// };
-
-	const listComponents = lists.map((loadedList) => {
-		return (
-			<GridItem>
-				<Button
-					id={loadedList.id}
-					// isActive="true"
-					outline="none"
-					onClick={() => {
-						setSelectedList(loadedList);
-						setTasks(loadedList.tasks);
-					}}
-				>
-					{loadedList.title}
-				</Button>
-				<Button
-					onClick={() => {
-						deleteList(loadedList.id);
-					}}
-				>
-					Delete
-				</Button>
-			</GridItem>
-		);
-	});
+	const listComponents =
+		lists &&
+		lists.map((loadedList) => {
+			return (
+				<GridItem>
+					<Button
+						id={loadedList.id}
+						// isActive="true"
+						outline="none"
+						onClick={() => {
+							setSelectedList(loadedList);
+							setTasks(loadedList.tasks); //sets list tasks
+							setComments(loadedList.tasks[0].comments); //sets view to comments for first task
+						}}
+					>
+						{loadedList.title}
+					</Button>
+					<Button
+						onClick={() => {
+							deleteList(loadedList.id);
+						}}
+					>
+						<DeleteIcon />
+					</Button>
+				</GridItem>
+			);
+		});
 
 	const taskComponents =
 		tasks &&
 		tasks.map((task) => {
 			return (
 				<GridItem>
-					<Menu>
-						<MenuButton
+					<Container>
+						<Button
 							id={task.id}
 							onClick={() => {
 								setSelectedTask(task);
 								setComments(task.comments);
+								onToggle();
 							}}
 						>
 							{task.title}
-						</MenuButton>
-						<MenuList>
-							<MenuItem> {task.desc}</MenuItem>
-						</MenuList>
-						<Button
-							onClick={() => {
-								markTaskAsComplete(task.id);
-							}}
-							// add for on hover - "Mark task as complete"
-						>
-							<CheckIcon />
 						</Button>
-						<Button
-							onClick={() => {
-								deleteTask(task.id);
-							}}
-						>
-							<DeleteIcon />
-							Delete
-						</Button>
-						<NewCommentModal />
-					</Menu>
+						<Collapse in={isOpen}>
+							<Box>{task.desc}</Box>
+						</Collapse>
+					</Container>
+					<Button
+						onClick={() => {
+							markTaskAsComplete(task.id);
+						}}
+						// add for on hover - "Mark task as complete"
+					>
+						<CheckIcon />
+					</Button>
+					<Button
+						onClick={() => {
+							deleteTask(task.id);
+						}}
+					>
+						<DeleteIcon />
+					</Button>
 				</GridItem>
 			);
 		});
@@ -138,7 +136,6 @@ export default function ListsList() {
 						}}
 					>
 						<DeleteIcon />
-						Delete
 					</Button>
 				</Flex>
 			);
@@ -163,16 +160,6 @@ export default function ListsList() {
 			</GridItem>
 			<Flex direction="column" width="30vh">
 				<Text>Comments:</Text>
-				<Input
-					type="text"
-					name="title"
-					placeholder="New comment text here"
-					value={newCommentText}
-					onChange={updateNewCommentText}
-				></Input>
-				<Button size="small" onClick={createNewCommentHandler}>
-					Add New Comment
-				</Button>
 				<NewCommentModal />
 				<Container>{commentComponents}</Container>
 			</Flex>
