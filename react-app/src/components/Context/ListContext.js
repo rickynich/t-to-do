@@ -49,9 +49,10 @@ export function ListProvider({ children }) {
 	const [selectedList, setSelectedList] = useState([
 		{ title: "default list", tasks: [{ title: "default task" }] },
 	]);
-	const [selectedTask, setSelectedTask] = useState([
-		{ task: "default task", comments: [{ title: "default task" }] },
-	]);
+	// const [selectedTask, setSelectedTask] = useState([
+	// 	{ task: "default task", comments: [{ title: "default task" }] },
+	// ]);
+	const [selectedTask, setSelectedTask] = useState([]);
 	const [selectedComment, setSelectedComment] = useState([]);
 	const [newListTitle, setNewListTitle] = useState();
 	const [newTaskTitle, setNewTaskTitle] = useState();
@@ -68,12 +69,16 @@ export function ListProvider({ children }) {
 			const responseData = await response.json();
 			setLists(responseData.lists);
 			setTasks(responseData.tasks); //for all tasks
-			console.log("INITIAL LOAD. response data :", responseData);
+			console.log(
+				"INITIAL LOAD. selected task:",
+				selectedTask,
+				responseData.tasks[0]
+			);
 		}
 		fetchData();
 	}, []);
 
-	//updates list 
+	//updates list
 	useEffect(() => {
 		async function fetchData() {
 			const response = await fetch("/lists/");

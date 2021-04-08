@@ -82,19 +82,34 @@ export default function ListsList() {
 	const taskComponents =
 		tasks &&
 		tasks.map((task) => {
+			console.log("task", task, "task status", task.status);
 			return (
 				<GridItem>
 					<Container>
-						<Button
-							id={task.id}
-							onClick={() => {
-								setSelectedTask(task);
-								setComments(task.comments);
-								onToggle();
-							}}
-						>
-							{task.title}
-						</Button>
+						{task.status === true ? (
+							<Button
+								id={task.id}
+								onClick={() => {
+									setSelectedTask(task);
+									setComments(task.comments);
+									onToggle();
+								}}
+								opacity=".2"
+							>
+								{task.title}
+							</Button>
+						) : (
+							<Button
+								id={task.id}
+								onClick={() => {
+									setSelectedTask(task);
+									setComments(task.comments);
+									onToggle();
+								}}
+							>
+								{task.title}
+							</Button>
+						)}
 						<Collapse in={isOpen}>
 							<Box>{task.desc}</Box>
 						</Collapse>

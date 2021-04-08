@@ -86,7 +86,7 @@ def delete_task(list_id, task_id):
     return {'errors': "There was an error with your delete request"}, 400
 
 # Updates the status of a task
-@list_routes.route('/<int:list_id>/tasks/<int:task_id>/toggle', methods=["PUT"])
+@list_routes.route('/<int:list_id>/tasks/<int:task_id>', methods=["PUT"])
 def change_task_status(list_id, task_id):
     print("IN TASK STATUS TOGGLER~~~")
     if task_id:
