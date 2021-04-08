@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import TaskComponents from "../Task/Tasks";
 import NewListModal from "./NewListModal";
 import NewTaskModal from "../Task/NewTaskModal";
-import NewCommentModal from "../Comments/NewCommentModal"
+import NewCommentModal from "../Comments/NewCommentModal";
 
 //Chakra
 import { Button } from "@chakra-ui/button";
@@ -44,7 +44,7 @@ export default function ListsList() {
 	const updateNewCommentText = useList().updateNewCommentText;
 	const createNewCommentText = useList().createNewCommentText;
 	const createNewCommentHandler = useList().createNewCommentHandler;
-
+	
 	if (!lists) return null;
 
 	// //new Comment handling
@@ -54,7 +54,6 @@ export default function ListsList() {
 	// const createNewCommentHandler = () => {
 	// 	createNewComment(selectedTask.id, newCommentText);
 	// };
-
 
 	const listComponents = lists.map((loadedList) => {
 		return (
@@ -115,6 +114,7 @@ export default function ListsList() {
 							<DeleteIcon />
 							Delete
 						</Button>
+						<NewCommentModal />
 					</Menu>
 				</GridItem>
 			);
@@ -173,7 +173,7 @@ export default function ListsList() {
 				<Button size="small" onClick={createNewCommentHandler}>
 					Add New Comment
 				</Button>
-				<NewCommentModal/>
+				<NewCommentModal />
 				<Container>{commentComponents}</Container>
 			</Flex>
 		</Grid>

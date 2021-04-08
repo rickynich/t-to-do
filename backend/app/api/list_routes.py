@@ -46,7 +46,7 @@ def deleteList(list_id):
     return {'errors': "There was an error with your delete request"}, 400
 
 @list_routes.route('/<int:id>')
-def user(id):
+def get_a_list(id):
     list = List.query.get(id)
     return list.to_dict()
 
@@ -56,6 +56,13 @@ def get_all_tasks(list_id):
     if list_id:
         tasks = Task.query.filter_by(list_id=list_id).all()
         return {"tasks": [task.to_dict() for task in tasks]}
+
+# Get an individual task:
+@list_routes.route('/<int:list_id>/tasks/<int:task_id>', methods=["GET"])
+def get_a_task(list_id, task_id):
+    if list_id:
+        task = Task.query.get(id)
+        return task.to_dict()
 
 
 # Adds a new task to a list:
@@ -83,7 +90,7 @@ def delete_task(list_id, task_id):
 # Get all comments for a task:
 @list_routes.route('/<int:list_id>/tasks/<int:task_id>/comments)', methods=["GET"])
 def get_all_comments(list_id, task_id):
-    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~IN GET ALL COMMENTS! {}~~~~~~~~~~~~~~'.format(task_id))
+    # print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~IN GET ALL COMMENTS! {}~~~~~~~~~~~~~~'.format(task_id))
     if task_id:
         comments = Comment.query.filter_by(task_id=task_id).all()
         return {"comments": [comment.to_dict() for comment in comments]}
