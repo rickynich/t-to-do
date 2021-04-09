@@ -36,7 +36,7 @@ export default function ListsList() {
 	const setComments = useList().setComments;
 	// const selectedList = useList().selectedList;
 	const setSelectedList = useList().setSelectedList;
-	// const selectedTask = useList().selectedTask;
+	const selectedTask = useList().selectedTask;
 	const setSelectedTask = useList().setSelectedTask;
 	// const createNewList = useList().createNewList;
 	const deleteList = useList().deleteList;
@@ -53,9 +53,21 @@ export default function ListsList() {
 	// const updateNewCommentText = useList().updateNewCommentText;
 	// const createNewCommentText = useList().createNewCommentText;
 	// const createNewCommentHandler = useList().createNewCommentHandler;
+	const [isCollapse, setCollapse] = useState(false);
 
 	if (!lists) return null;
 
+	const toggle = index => {
+		if (index) {
+			// to show the rest of the elements
+			setCollapse(!isCollapse);
+		}
+		if (index === 0) {
+			//  to show first item
+			setCollapse(!isCollapse);
+		}
+	}
+		
 	const listComponents =
 		lists &&
 		lists.map((loadedList) => {
@@ -87,7 +99,7 @@ export default function ListsList() {
 
 	const taskComponents =
 		tasks &&
-		tasks.map((task) => {
+		tasks.map((task, index) => {
 			// console.log("task", task, "task status", task.status);
 			return (
 				<GridItem>
@@ -98,11 +110,13 @@ export default function ListsList() {
 								onClick={() => {
 									setSelectedTask(task);
 									setComments(task.comments);
-									onToggle();
+									// onToggle();
+									toggle(index);
 								}}
-								opacity=".2"
+								opacity=".3"
+								isActive={true}
 							>
-								{task.title}
+								{task.title} (Completed)
 							</Button>
 						) : (
 							<Button
@@ -110,19 +124,22 @@ export default function ListsList() {
 								onClick={() => {
 									setSelectedTask(task);
 									setComments(task.comments);
-									onToggle();
+									// onToggle();
+									toggle(index);
 								}}
 							>
 								{task.title}
 							</Button>
 						)}
-						<Collapse in={isOpen}>
-							<Box>{task.desc}</Box>
-						</Collapse>
+						{selectedTask.id == task.id && (
+							<Collapse in={isCollapse}>
+								<Box>{task.desc}</Box>
+							</Collapse>
+						)}
 					</Container>
 					<Button
 						onClick={() => {
-							setSelectedTask(task)
+							setSelectedTask(task);
 							markTaskAsComplete(task.id);
 						}}
 						// add for on hover - "Mark task as complete"
