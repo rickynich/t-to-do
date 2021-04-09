@@ -1,3 +1,6 @@
+import React from "react";
+
+//Chakra UI
 import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { useDisclosure } from "@chakra-ui/hooks";
@@ -19,7 +22,6 @@ import {
 	PopoverHeader,
 	PopoverTrigger,
 } from "@chakra-ui/popover";
-import React from "react";
 
 //context
 import { useList } from "../Context/ListContext";

@@ -135,6 +135,7 @@ export function ListProvider({ children }) {
 		}
 		//edit a list title 
 		async function editListTitle(title) {
+			console.log("In edit List put request function",  title)
 			const response = await fetch(`/lists/${selectedList.id}`, {
 				method: "PUT",
 				headers: {
@@ -145,7 +146,6 @@ export function ListProvider({ children }) {
 				}),
 			});
 			const editListResponseData = await response.json();
-			console.log("In edit List put request function",  title)
 			return dispatch({
 				type: actions.EDIT_LIST,
 				value: editListResponseData.title,

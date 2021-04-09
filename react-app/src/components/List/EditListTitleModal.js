@@ -1,4 +1,8 @@
+import React from "react";
+
+//Chakra UI
 import { Button } from "@chakra-ui/button";
+import { EditIcon } from "@chakra-ui/icons";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
@@ -17,7 +21,6 @@ import {
 	PopoverHeader,
 	PopoverTrigger,
 } from "@chakra-ui/popover";
-import React from "react";
 
 //context
 import { useList } from "../Context/ListContext";
@@ -27,11 +30,12 @@ function EditListTitleModal() {
 	const editListTitle = useList().editListTitle;
 	const newListTitle = useList().newListTitle;
 	const updateNewListTitle = useList().updateNewListTitle;
-	const createNewListHandler = useList().createNewListHandler;
 
 	return (
 		<>
-			<Button onClick={onOpen}>EDIT LIST TITLE</Button>
+			<Button onClick={onOpen}>
+				<EditIcon />
+			</Button>
 
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
@@ -53,7 +57,7 @@ function EditListTitleModal() {
 					<ModalFooter>
 						<Popover>
 							<PopoverTrigger>
-								<Button onClick={editListTitle} mr={3}>
+								<Button onClick={() => { editListTitle(newListTitle) }} mr={3}>
 									Submit change
 								</Button>
 							</PopoverTrigger>
