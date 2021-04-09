@@ -6,6 +6,7 @@ import NewListModal from "./NewListModal";
 import NewTaskModal from "../Task/NewTaskModal";
 import NewCommentModal from "../Comments/NewCommentModal";
 import EditCommentModal from "../Comments/EditCommentModal";
+import EditListTitleModal from "./EditListTitleModal";
 
 //Chakra
 import { Button } from "@chakra-ui/button";
@@ -33,25 +34,25 @@ export default function ListsList() {
 	const setTasks = useList().setTasks;
 	const comments = useList().comments;
 	const setComments = useList().setComments;
-	const selectedList = useList().selectedList;
+	// const selectedList = useList().selectedList;
 	const setSelectedList = useList().setSelectedList;
-	const selectedTask = useList().selectedTask;
+	// const selectedTask = useList().selectedTask;
 	const setSelectedTask = useList().setSelectedTask;
-	const createNewList = useList().createNewList;
+	// const createNewList = useList().createNewList;
 	const deleteList = useList().deleteList;
-	const createNewTask = useList().createNewTask;
+	// const createNewTask = useList().createNewTask;
 	const deleteTask = useList().deleteTask;
 	const markTaskAsComplete = useList().markTaskAsComplete;
-	const createNewComment = useList().createNewComment;
+	// const createNewComment = useList().createNewComment;
 	const deleteComment = useList().deleteComment;
-	const editComment = useList().editComment;
+	// const editComment = useList().editComment;
 	const selectedComment = useList().selectedComment;
 	const setSelectedComment = useList().setSelectedComment;
-	const newCommentText = useList().newCommentText;
-	const setNewCommentText = useList().setNewCommentText;
-	const updateNewCommentText = useList().updateNewCommentText;
-	const createNewCommentText = useList().createNewCommentText;
-	const createNewCommentHandler = useList().createNewCommentHandler;
+	// const newCommentText = useList().newCommentText;
+	// const setNewCommentText = useList().setNewCommentText;
+	// const updateNewCommentText = useList().updateNewCommentText;
+	// const createNewCommentText = useList().createNewCommentText;
+	// const createNewCommentHandler = useList().createNewCommentHandler;
 
 	if (!lists) return null;
 
@@ -72,6 +73,7 @@ export default function ListsList() {
 					>
 						{loadedList.title}
 					</Button>
+					<EditListTitleModal/>
 					<Button
 						onClick={() => {
 							deleteList(loadedList.id);

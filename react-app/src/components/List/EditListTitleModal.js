@@ -1,9 +1,7 @@
 import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { useDisclosure } from "@chakra-ui/hooks";
-import { EditIcon } from "@chakra-ui/icons";
 import { Input } from "@chakra-ui/input";
-import { Container } from "@chakra-ui/layout";
 import {
 	Modal,
 	ModalBody,
@@ -24,60 +22,51 @@ import React from "react";
 //context
 import { useList } from "../Context/ListContext";
 
-function EditCommentModal(props) {
+function EditListTitleModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const newCommentText = useList().newCommentText;
-
-	const updateNewCommentText = useList().updateNewCommentText;
-	const editComment = useList().editComment;
-	// const editCommentHandler = useList().editCommentHandler;
-	const loadedComment = props.comment;
+	const editListTitle = useList().editListTitle;
+	const newListTitle = useList().newListTitle;
+	const updateNewListTitle = useList().updateNewListTitle;
+	const createNewListHandler = useList().createNewListHandler;
 
 	return (
-		<Container>
-			<Button onClick={onOpen}>
-				Edit Comment
-				<EditIcon />
-			</Button>
-			<Modal isOpen={isOpen} onClose={onClose} size="xl">
+		<>
+			<Button onClick={onOpen}>EDIT LIST TITLE</Button>
+
+			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader>Edit your Comment</ModalHeader>
+					<ModalHeader>Create your list title</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody pb={6}>
 						<FormControl>
-							<FormLabel>Comment text</FormLabel>
+							<FormLabel>List title</FormLabel>
 							<Input
 								type="text"
-								name="text"
-								placeholder="Comment text"
-								value={newCommentText}
-								onChange={updateNewCommentText}
+								name="title"
+								placeholder="List title"
+								value={newListTitle}
+								onChange={updateNewListTitle}
 							/>
 						</FormControl>
 					</ModalBody>
 					<ModalFooter>
 						<Popover>
 							<PopoverTrigger>
-								<Button
-									onClick={() => {
-										editComment(loadedComment.id, newCommentText);
-									}}
-									mr={3}
-								>
-									Submit Edit
+								<Button onClick={editListTitle} mr={3}>
+									Submit change
 								</Button>
 							</PopoverTrigger>
 							<PopoverContent>
-								<PopoverHeader>Comment has been edited</PopoverHeader>
+								<PopoverHeader>List title edited!</PopoverHeader>
 							</PopoverContent>
 						</Popover>
 						<Button onClick={onClose}>Cancel</Button>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
-		</Container>
+		</>
 	);
 }
 
-export default EditCommentModal;
+export default EditListTitleModal;

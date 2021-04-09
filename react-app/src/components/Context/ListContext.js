@@ -27,6 +27,8 @@ function reducer(state, action) {
 	switch (action.type) {
 		case actions.ADD_LIST:
 			return { ...state, lists: action.value };
+		case actions.EDIT_LIST:
+			return { ...state, lists: action.value };
 		case actions.DELETE_LIST:
 			return { ...state };
 		case actions.ADD_TASK:
@@ -131,6 +133,31 @@ export function ListProvider({ children }) {
 			dispatch({ type: actions.DELETE_LIST });
 			return await response.json();
 		}
+		//edit a list title 
+		async function editListTitle(title) {
+			const response = await fetch(`/lists/${selectedList.id}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					title,
+				}),
+			});
+			const editListResponseData = await response.json();
+			console.log("In edit List put request function",  title)
+			return dispatch({
+				type: actions.EDIT_LIST,
+				value: editListResponseData.title,
+			});
+		}
+		//new List handling
+		const updateNewListTitle = (e) => {
+			setNewListTitle(e.target.value);
+		};
+		const createNewListHandler = () => {
+			createNewList(newListTitle);
+		};
 
 	//Task methods
 		//create new task
@@ -229,18 +256,12 @@ export function ListProvider({ children }) {
 				value: editCommentResponseData.comments,
 			});
 		}
-		const editCommentHandler = () => {
-			editComment(selectedComment, newCommentText);
-		};
+		// const editCommentHandler = () => {
+		// 	editComment(selectedComment, newCommentText);
+		// };
 
 
-	//new List handling
-	const updateNewListTitle = (e) => {
-		setNewListTitle(e.target.value);
-	};
-	const createNewListHandler = () => {
-		createNewList(newListTitle);
-	};
+
 	//new Task handling
 	const updateNewTaskTitle = (e) => {
 		setNewTaskTitle(e.target.value);
@@ -291,8 +312,9 @@ export function ListProvider({ children }) {
 				setSelectedComment,
 				deleteComment,
 				editComment,
-				editCommentHandler,
+				// editCommentHandler,
 				newListTitle,
+				editListTitle,
 				setNewListTitle,
 				updateNewListTitle,
 				createNewListHandler,

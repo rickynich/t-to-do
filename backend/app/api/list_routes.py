@@ -47,6 +47,17 @@ def deleteList(list_id):
         return "List deleted"
     return {'errors': "There was an error with your delete request"}, 400
 
+# Edit a list title 
+@list_routes.route('/<int:list_id>', methods=["PUT"])
+def edit_list_title(list_id):
+    if list_id:
+        list = List.query.get(list_id)
+        form = CreateListForm()
+        list.title = form.data['title']
+        db.session.commit()
+        return list.to_dict()
+    return {'errors': "There was an error with your PUT request for List title edit"}, 400
+
 
 # Get all tasks for a list:
 @list_routes.route('/<int:list_id>/tasks', methods=["GET"])
