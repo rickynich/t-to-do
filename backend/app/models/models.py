@@ -37,7 +37,7 @@ class Task(db.Model):
     status = db.Column(db.Boolean)
     list_id = db.Column(db.Integer, db.ForeignKey('lists.id'), nullable=False)
 
-    list = db.relationship('List', backref='tasks')
+    list = db.relationship('List', backref='tasks', cascade="all, delete-orphan")
 
     def __repr__(self):
       return '<Task %r>' % self.title
@@ -59,7 +59,7 @@ class Comment(db.Model):
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'), nullable=False)
     text = db.Column(db.String(300))
 
-    task = db.relationship('Task', backref='comments')
+    task = db.relationship('Task', backref='comments', cascade="all, delete-orphan")
     
     def to_dict(self):
         return {
