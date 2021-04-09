@@ -117,13 +117,18 @@ def make_new_comment(list_id, task_id):
         db.session.add(newComment)
         db.session.commit()
         return task.to_dict()
-    return {'errors': "There was an error with your POST request for Coment add"}, 400
+    return {'errors': "There was an error with your POST request for Comment add"}, 400
 
 # Edits a comment 
-@list_routes.route('/<int:list_id>/tasks/<int:task_id>/comment/<int:comment_id>', methods=["PUT"])
+@list_routes.route('/<int:list_id>/tasks/<int:task_id>/comments/<int:comment_id>', methods=["PUT"])
 def edit_comment(list_id, task_id, comment_id):
     if comment_id:
         comment = Comment.query.get(comment_id)
+        form = CreateCommentForm()
+        comment.text = form.data['text']
+        db.session.commit()
+        return comment.to_dict()
+    return {'errors': "There was an error with your PUT request for Comment edit"}, 400
 
 
 # Delete a comment from a task: 

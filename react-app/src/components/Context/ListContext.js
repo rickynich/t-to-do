@@ -53,10 +53,8 @@ export function ListProvider({ children }) {
 	const [selectedList, setSelectedList] = useState([
 		{ title: "default list", tasks: [{ title: "default task" }] },
 	]);
-	// const [selectedTask, setSelectedTask] = useState([
-	// 	{ task: "default task", comments: [{ title: "default task" }] },
-	// ]);
 	const [selectedTask, setSelectedTask] = useState([]);
+	const [selectedComment, setSelectedComment] = useState({});
 	const [newListTitle, setNewListTitle] = useState();
 	const [newTaskTitle, setNewTaskTitle] = useState();
 	const [newTaskDesc, setNewTaskDesc] = useState();
@@ -110,120 +108,130 @@ export function ListProvider({ children }) {
 	}, [state]);
 
 	// List methods
-	async function createNewList(title) {
-		const response = await fetch("/lists/", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				title,
-			}),
-		});
-		const newListResponseData = await response.json();
-		return dispatch({ type: actions.ADD_LIST, value: newListResponseData });
-	}
-	async function deleteList(listId) {
-		const response = await fetch(`/lists/${listId}`, {
-			method: "DELETE",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-		dispatch({ type: actions.DELETE_LIST });
-		return await response.json();
-	}
-
-	//Task methods
-	async function createNewTask(listId, title, desc) {
-		const response = await fetch(`/lists/${listId}`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				title,
-				desc,
-			}),
-		});
-		const newTaskResponseData = await response.json();
-		return dispatch({
-			type: actions.ADD_TASK,
-			value: newTaskResponseData.tasks,
-		});
-	}
-	async function deleteTask(taskId) {
-		const response = await fetch(`/lists/${selectedList.id}/tasks/${taskId}`, {
-			method: "DELETE",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-		dispatch({ type: actions.DELETE_TASK });
-		return await response.json();
-	}
-	//for changing task status
-	async function markTaskAsComplete(taskId) {
-		const response = await fetch(`/lists/${selectedList.id}/tasks/${taskId}`, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				status: true,
-			}),
-		});
-		const taskResponseData = await response.json();
-		// console.log("taskResponseDate", taskResponseData)
-		return dispatch({ type: actions.UPDATE_TASK, value: taskResponseData.status });
-	}
-
-	//Comment methods
-	async function createNewComment(taskId, text) {
-		const response = await fetch(`/lists/${selectedList.id}/tasks/${taskId}`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				text,
-			}),
-		});
-		const newCommentResponseData = await response.json();
-		return dispatch({
-			type: actions.ADD_COMMENT,
-			value: newCommentResponseData.comments,
-		});
-	}
-	//delete a comment
-	async function deleteComment(commentId) {
-		// console.log("List deleted (log from list context module). listId: ", listId)
-		const response = await fetch(
-			`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments/${commentId}`,
-			{
+		async function createNewList(title) {
+			const response = await fetch("/lists/", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					title,
+				}),
+			});
+			const newListResponseData = await response.json();
+			return dispatch({ type: actions.ADD_LIST, value: newListResponseData });
+		}
+		async function deleteList(listId) {
+			const response = await fetch(`/lists/${listId}`, {
 				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
-		);
-		dispatch({ type: actions.DELETE_COMMENT, value: selectedTask.comments });
-		return await response.json();
-	}
-	//edit a comment 
-	async function editComment(commentId, text) {
-		const response = await fetch(`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments/${commentId}`, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				text,
-			}),
-		});
-		dispatch({ type: actions.EDIT_COMMENT });
-		return await response.json();
-	}
+			});
+			dispatch({ type: actions.DELETE_LIST });
+			return await response.json();
+		}
+
+	//Task methods
+		//create new task
+		async function createNewTask(listId, title, desc) {
+			const response = await fetch(`/lists/${listId}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					title,
+					desc,
+				}),
+			});
+			const newTaskResponseData = await response.json();
+			return dispatch({
+				type: actions.ADD_TASK,
+				value: newTaskResponseData.tasks,
+			});
+		}
+		//delete task
+		async function deleteTask(taskId) {
+			const response = await fetch(`/lists/${selectedList.id}/tasks/${taskId}`, {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			dispatch({ type: actions.DELETE_TASK });
+			return await response.json();
+		}
+		//changes task status
+		async function markTaskAsComplete(taskId) {
+			const response = await fetch(`/lists/${selectedList.id}/tasks/${taskId}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					status: true,
+				}),
+			});
+			const taskResponseData = await response.json();
+			// console.log("taskResponseDate", taskResponseData)
+			return dispatch({ type: actions.UPDATE_TASK, value: taskResponseData.status });
+		}
+
+	//Comment methods
+		//Create a new comment
+		async function createNewComment(taskId, text) {
+			const response = await fetch(`/lists/${selectedList.id}/tasks/${taskId}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					text,
+				}),
+			});
+			const newCommentResponseData = await response.json();
+			return dispatch({
+				type: actions.ADD_COMMENT,
+				value: newCommentResponseData.comments,
+			});
+		}
+		//delete a comment
+		async function deleteComment(commentId) {
+			// console.log("List deleted (log from list context module). listId: ", listId)
+			const response = await fetch(
+				`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments/${commentId}`,
+				{
+					method: "DELETE",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}
+			);
+			dispatch({ type: actions.DELETE_COMMENT, value: selectedTask.comments });
+			return await response.json();
+		}
+		//edit a comment 
+		async function editComment(commentId, text) {
+			const response = await fetch(`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments/${commentId}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					text,
+				}),
+			});
+			const editCommentResponseData = await response.json();
+			console.log("In edit comment put request function", commentId, text)
+			return dispatch({
+				type: actions.EDIT_COMMENT,
+				value: editCommentResponseData.comments,
+			});
+		}
+		const editCommentHandler = () => {
+			editComment(selectedComment, newCommentText);
+		};
 
 
 	//new List handling
@@ -252,6 +260,7 @@ export function ListProvider({ children }) {
 		createNewComment(selectedTask.id, newCommentText);
 	};
 
+
 	// const values = {
 	// 	lists,
 	// 	completeTask,
@@ -279,7 +288,10 @@ export function ListProvider({ children }) {
 				deleteTask,
 				markTaskAsComplete,
 				createNewComment,
+				setSelectedComment,
 				deleteComment,
+				editComment,
+				editCommentHandler,
 				newListTitle,
 				setNewListTitle,
 				updateNewListTitle,

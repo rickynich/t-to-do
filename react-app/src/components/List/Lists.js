@@ -5,6 +5,7 @@ import TaskComponents from "../Task/Tasks";
 import NewListModal from "./NewListModal";
 import NewTaskModal from "../Task/NewTaskModal";
 import NewCommentModal from "../Comments/NewCommentModal";
+import EditCommentModal from "../Comments/EditCommentModal";
 
 //Chakra
 import { Button } from "@chakra-ui/button";
@@ -43,6 +44,9 @@ export default function ListsList() {
 	const markTaskAsComplete = useList().markTaskAsComplete;
 	const createNewComment = useList().createNewComment;
 	const deleteComment = useList().deleteComment;
+	const editComment = useList().editComment;
+	const selectedComment = useList().selectedComment;
+	const setSelectedComment = useList().setSelectedComment;
 	const newCommentText = useList().newCommentText;
 	const setNewCommentText = useList().setNewCommentText;
 	const updateNewCommentText = useList().updateNewCommentText;
@@ -142,9 +146,12 @@ export default function ListsList() {
 				<Flex>
 					<Text id={comment.id}>{comment.text}</Text>
 					<Button
-					// for edit comment
+						onClick={() => {
+							setSelectedComment(comment)
+							console.log("Selected comment: ", selectedComment, comment)
+						}}
 					>
-						<EditIcon />
+						<EditCommentModal comment={comment}/>
 					</Button>
 					<Button
 						onClick={() => {
