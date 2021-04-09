@@ -17,8 +17,10 @@ const actions = {
 	DELETE_LIST: "DELETE_LIST",
 	ADD_TASK: "ADD_TASK",
 	DELETE_TASK: "DELETE_TASK",
+	UPDATE_TASK: "UPDATE_TASK",
 	ADD_COMMENT: "ADD_COMMENT",
 	DELETE_COMMENT: "DELETE_COMMENT",
+	EDIT_COMMENT: "EDIT_COMMENT",
 };
 
 function reducer(state, action) {
@@ -37,6 +39,8 @@ function reducer(state, action) {
 			return { ...state, comments: action.value };
 		case actions.DELETE_COMMENT:
 			return { ...state };
+		case actions.EDIT_COMMENT:
+			return { ...state, comments: action.value };
 		default:
 			return state;
 	}
@@ -53,7 +57,6 @@ export function ListProvider({ children }) {
 	// 	{ task: "default task", comments: [{ title: "default task" }] },
 	// ]);
 	const [selectedTask, setSelectedTask] = useState([]);
-	const [selectedComment, setSelectedComment] = useState([]);
 	const [newListTitle, setNewListTitle] = useState();
 	const [newTaskTitle, setNewTaskTitle] = useState();
 	const [newTaskDesc, setNewTaskDesc] = useState();
@@ -170,8 +173,9 @@ export function ListProvider({ children }) {
 				status: true,
 			}),
 		});
-		dispatch({ type: actions.UPDATE_TASK });
-		return await response.json();
+		const taskResponseData = await response.json();
+		// console.log("taskResponseDate", taskResponseData)
+		return dispatch({ type: actions.UPDATE_TASK, value: taskResponseData.status });
 	}
 
 	//Comment methods
@@ -191,6 +195,7 @@ export function ListProvider({ children }) {
 			value: newCommentResponseData.comments,
 		});
 	}
+	//delete a comment
 	async function deleteComment(commentId) {
 		// console.log("List deleted (log from list context module). listId: ", listId)
 		const response = await fetch(
@@ -205,6 +210,21 @@ export function ListProvider({ children }) {
 		dispatch({ type: actions.DELETE_COMMENT, value: selectedTask.comments });
 		return await response.json();
 	}
+	//edit a comment 
+	async function editComment(commentId, text) {
+		const response = await fetch(`/lists/${selectedList.id}/tasks/${selectedTask.id}/comments/${commentId}`, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				text,
+			}),
+		});
+		dispatch({ type: actions.EDIT_COMMENT });
+		return await response.json();
+	}
+
 
 	//new List handling
 	const updateNewListTitle = (e) => {

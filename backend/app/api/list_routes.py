@@ -120,8 +120,10 @@ def make_new_comment(list_id, task_id):
     return {'errors': "There was an error with your POST request for Coment add"}, 400
 
 # Edits a comment 
-# @list_routes.route('/<int:list_id>/tasks/<int:task_id>', methods=["POST"])
-# def edit_comment(list_id, task_id):
+@list_routes.route('/<int:list_id>/tasks/<int:task_id>/comment/<int:comment_id>', methods=["PUT"])
+def edit_comment(list_id, task_id, comment_id):
+    if comment_id:
+        comment = Comment.query.get(comment_id)
 
 
 # Delete a comment from a task: 

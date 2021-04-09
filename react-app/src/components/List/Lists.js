@@ -82,7 +82,7 @@ export default function ListsList() {
 	const taskComponents =
 		tasks &&
 		tasks.map((task) => {
-			console.log("task", task, "task status", task.status);
+			// console.log("task", task, "task status", task.status);
 			return (
 				<GridItem>
 					<Container>
@@ -116,6 +116,7 @@ export default function ListsList() {
 					</Container>
 					<Button
 						onClick={() => {
+							setSelectedTask(task)
 							markTaskAsComplete(task.id);
 						}}
 						// add for on hover - "Mark task as complete"
