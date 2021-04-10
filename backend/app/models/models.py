@@ -18,8 +18,6 @@ class List(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(60), nullable = False )
 
-    # tasks = db.relationship("Task", back_populates="lists")
-
     def to_dict(self):
         tasks = [task.to_dict() for task in self.tasks]
         return {
@@ -27,6 +25,7 @@ class List(db.Model):
         "title": self.title,
         "tasks": tasks
         }
+
 
 class Task(db.Model):
     __tablename__ = 'tasks'
@@ -37,7 +36,7 @@ class Task(db.Model):
     status = db.Column(db.Boolean)
     list_id = db.Column(db.Integer, db.ForeignKey('lists.id'), nullable=False)
 
-    list = db.relationship('List', backref='tasks', cascade="all, delete-orphan")
+    list = db.relationship('List', backref=db.backref('tasks', cascade='all, delete-orphan', lazy=True, single_parent=True))
 
     def __repr__(self):
       return '<Task %r>' % self.title
@@ -59,7 +58,7 @@ class Comment(db.Model):
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'), nullable=False)
     text = db.Column(db.String(300))
 
-    task = db.relationship('Task', backref='comments', cascade="all, delete-orphan")
+    task = db.relationship('Task', backref=db.backref('comments', cascade="all, delete-orphan", lazy=True, single_parent=True))
     
     def to_dict(self):
         return {

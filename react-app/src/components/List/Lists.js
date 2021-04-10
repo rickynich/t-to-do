@@ -80,7 +80,7 @@ export default function ListsList() {
 						onClick={() => {
 							setSelectedList(loadedList);
 							setTasks(loadedList.tasks); //sets list tasks
-							setComments(loadedList.tasks[0].comments); //sets view to comments for first task
+							// setComments(loadedList.tasks[0].comments); //sets view to comments for first task
 						}}
 					>
 						{loadedList.title}
