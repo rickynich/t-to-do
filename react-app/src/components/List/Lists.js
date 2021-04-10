@@ -11,14 +11,7 @@ import EditListTitleModal from "./EditListTitleModal";
 //Chakra
 import { Button } from "@chakra-ui/button";
 import { Box, Container, Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
-import {
-	Collapse,
-	Input,
-	Menu,
-	MenuButton,
-	MenuItem,
-	MenuList,
-} from "@chakra-ui/react";
+import { Collapse } from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useDisclosure } from "@chakra-ui/hooks";
 
@@ -26,7 +19,7 @@ import { useDisclosure } from "@chakra-ui/hooks";
 import { useList } from "../Context/ListContext";
 
 export default function ListsList() {
-	const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
+	// const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
 
 	//uses ListContext:
 	const lists = useList().lists;
@@ -34,30 +27,20 @@ export default function ListsList() {
 	const setTasks = useList().setTasks;
 	const comments = useList().comments;
 	const setComments = useList().setComments;
-	// const selectedList = useList().selectedList;
 	const setSelectedList = useList().setSelectedList;
 	const selectedTask = useList().selectedTask;
 	const setSelectedTask = useList().setSelectedTask;
-	// const createNewList = useList().createNewList;
 	const deleteList = useList().deleteList;
-	// const createNewTask = useList().createNewTask;
 	const deleteTask = useList().deleteTask;
 	const markTaskAsComplete = useList().markTaskAsComplete;
-	// const createNewComment = useList().createNewComment;
 	const deleteComment = useList().deleteComment;
-	// const editComment = useList().editComment;
 	const selectedComment = useList().selectedComment;
 	const setSelectedComment = useList().setSelectedComment;
-	// const newCommentText = useList().newCommentText;
-	// const setNewCommentText = useList().setNewCommentText;
-	// const updateNewCommentText = useList().updateNewCommentText;
-	// const createNewCommentText = useList().createNewCommentText;
-	// const createNewCommentHandler = useList().createNewCommentHandler;
 	const [isCollapse, setCollapse] = useState(false);
 
 	if (!lists) return null;
 
-	const toggle = index => {
+	const toggle = (index) => {
 		if (index) {
 			// to show the rest of the elements
 			setCollapse(!isCollapse);
@@ -66,8 +49,8 @@ export default function ListsList() {
 			//  to show first item
 			setCollapse(!isCollapse);
 		}
-	}
-		
+	};
+
 	const listComponents =
 		lists &&
 		lists.map((loadedList) => {
@@ -80,12 +63,11 @@ export default function ListsList() {
 						onClick={() => {
 							setSelectedList(loadedList);
 							setTasks(loadedList.tasks); //sets list tasks
-							// setComments(loadedList.tasks[0].comments); //sets view to comments for first task
 						}}
 					>
 						{loadedList.title}
 					</Button>
-					<EditListTitleModal/>
+					<EditListTitleModal />
 					<Button
 						onClick={() => {
 							deleteList(loadedList.id);
@@ -166,11 +148,11 @@ export default function ListsList() {
 					<Text id={comment.id}>{comment.text}</Text>
 					<Button
 						onClick={() => {
-							setSelectedComment(comment)
-							console.log("Selected comment: ", selectedComment, comment)
+							setSelectedComment(comment);
+							console.log("Selected comment: ", selectedComment, comment);
 						}}
 					>
-						<EditCommentModal comment={comment}/>
+						<EditCommentModal comment={comment} />
 					</Button>
 					<Button
 						onClick={() => {
@@ -188,22 +170,26 @@ export default function ListsList() {
 			justifyContent="center"
 			width="100%"
 			gridAutoColumns="auto"
-			gridTemplateColumns="repeat(4, 1fr)"
+			gridTemplateColumns="repeat(3, 1fr)"
 		>
 			<Flex flexFlow="column wrap" align="space-between" width="30vh">
 				<Text>Lists:</Text>
 				<NewListModal />
 				{listComponents}
 			</Flex>
-			<GridItem colSpan={2} width="50vh" alignContent="center">
+			<GridItem width="50vh" alignContent="center">
 				<Text>Tasks:</Text>
 				<NewTaskModal />
 				<Container>{taskComponents}</Container>
 			</GridItem>
 			<Flex direction="column" width="30vh">
-				<Text>Comments:</Text>
-				<NewCommentModal />
-				<Container>{commentComponents}</Container>
+				{isCollapse && (
+					<>
+						<Text>Comments:</Text>
+						<NewCommentModal />
+						<Container>{commentComponents}</Container>
+					</>
+				)}
 			</Flex>
 		</Grid>
 	);

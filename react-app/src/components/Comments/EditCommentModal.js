@@ -6,7 +6,7 @@ import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { EditIcon } from "@chakra-ui/icons";
 import { Input } from "@chakra-ui/input";
-import { Container } from "@chakra-ui/layout";
+import { Container, Flex } from "@chakra-ui/layout";
 import {
 	Modal,
 	ModalBody,
@@ -36,9 +36,8 @@ function EditCommentModal(props) {
 	const loadedComment = props.comment;
 
 	return (
-		<Container>
+		<Flex>
 			<Button onClick={onOpen}>
-				Edit Comment
 				<EditIcon />
 			</Button>
 			<Modal isOpen={isOpen} onClose={onClose} size="xl">
@@ -78,7 +77,7 @@ function EditCommentModal(props) {
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
-		</Container>
+		</Flex>
 	);
 }
 
