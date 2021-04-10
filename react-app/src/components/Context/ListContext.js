@@ -131,6 +131,7 @@ export function ListProvider({ children }) {
 				},
 			});
 			dispatch({ type: actions.DELETE_LIST });
+			setComments([])
 			return await response.json();
 		}
 		//edit a list title 
@@ -187,6 +188,7 @@ export function ListProvider({ children }) {
 				},
 			});
 			dispatch({ type: actions.DELETE_TASK });
+			setComments([])
 			return await response.json();
 		}
 		//changes task status
