@@ -9,7 +9,7 @@ import EditCommentModal from "../Comments/EditCommentModal";
 import EditListTitleModal from "./EditListTitleModal";
 
 //Chakra
-import { Button, ButtonGroup } from "@chakra-ui/button";
+import { Button, ButtonGroup, IconButton } from "@chakra-ui/button";
 import { Box, Container, Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
 import { Collapse, FormControl } from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
@@ -158,23 +158,22 @@ export default function ListsList() {
 		comments &&
 		comments.map((comment) => {
 			return (
-				<Flex>
+				<Flex flexDir="column">
 					<Text id={comment.id}>{comment.text}</Text>
-					<Button
-						onClick={() => {
-							setSelectedComment(comment);
-							console.log("Selected comment: ", selectedComment, comment);
-						}}
-					>
-						<EditCommentModal comment={comment} />
-					</Button>
-					<Button
-						onClick={() => {
-							deleteComment(comment.id);
-						}}
-					>
-						<DeleteIcon />
-					</Button>
+					<ButtonGroup isAttached>
+						<EditCommentModal
+							comment={comment}
+							onClick={() => {
+								setSelectedComment(comment);
+							}}
+						/>
+						<IconButton
+							onClick={() => {
+								deleteComment(comment.id);
+							}}
+							icon={<DeleteIcon/>}						/>
+
+					</ButtonGroup>
 				</Flex>
 			);
 		});
@@ -203,11 +202,13 @@ export default function ListsList() {
 				<Container>{taskComponents}</Container>
 			</Flex>
 			{/* </GridItem> */}
-			<Flex direction="column" width="30vh">
+			<Flex direction="column" width="30vh" mt={8} align="center">
 				{isCollapse && (
 					<>
-						<Text>Comments:</Text>
 						<NewCommentModal />
+						<Text fontSize="xl" as="u">
+							Comments:
+						</Text>
 						<Container>{commentComponents}</Container>
 					</>
 				)}
