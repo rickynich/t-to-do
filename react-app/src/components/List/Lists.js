@@ -41,12 +41,7 @@ export default function ListsList() {
 	if (!lists) return null;
 
 	const toggle = (index) => {
-		if (index) {
-			// to show the rest of the elements
-			setCollapse(!isCollapse);
-		}
-		if (index === 0) {
-			//  to show first item
+		if (index >= 0 && !isCollapse) {
 			setCollapse(!isCollapse);
 		}
 	};
@@ -90,7 +85,7 @@ export default function ListsList() {
 				// <GridItem>
 				<Container dir="column">
 					<Flex m={1}>
-						<Flex maxWidth="300px" textOverflow="wrap">
+						<Flex maxWidth="300px">
 							{task.status === true ? (
 								<Button
 									id={task.id}
@@ -112,7 +107,7 @@ export default function ListsList() {
 							) : (
 								<Button
 									id={task.id}
-									width="300px"
+										width="300px"
 									// height="70px"
 									onClick={() => {
 										setSelectedTask(task);
