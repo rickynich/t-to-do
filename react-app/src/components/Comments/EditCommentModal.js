@@ -37,7 +37,7 @@ function EditCommentModal(props) {
 
 	return (
 		<Flex>
-			<Button onClick={onOpen}>
+			<Button onClick={onOpen} >
 				<EditIcon />
 			</Button>
 			<Modal isOpen={isOpen} onClose={onClose} size="xl">

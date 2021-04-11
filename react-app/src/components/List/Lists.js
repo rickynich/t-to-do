@@ -9,7 +9,7 @@ import EditCommentModal from "../Comments/EditCommentModal";
 import EditListTitleModal from "./EditListTitleModal";
 
 //Chakra
-import { Button } from "@chakra-ui/button";
+import { Button, ButtonGroup } from "@chakra-ui/button";
 import { Box, Container, Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
 import { Collapse, FormControl } from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
@@ -55,10 +55,11 @@ export default function ListsList() {
 		lists &&
 		lists.map((loadedList) => {
 			return (
-				<GridItem>
-					<Flex>
+				<Flex m={1}>
+					<ButtonGroup isAttached variant="outline">
 						<Button
 							id={loadedList.id}
+							width="150px"
 							// isActive="true"
 							outline="none"
 							onClick={() => {
@@ -76,8 +77,8 @@ export default function ListsList() {
 						>
 							<DeleteIcon />
 						</Button>
-					</Flex>
-				</GridItem>
+					</ButtonGroup>
+				</Flex>
 			);
 		});
 
@@ -86,8 +87,9 @@ export default function ListsList() {
 		tasks.map((task, index) => {
 			// console.log("task", task, "task status", task.status);
 			return (
-				<GridItem>
-					<Flex>
+				// <GridItem>
+				<Container dir="column">
+					<Flex m={1}>
 						<Flex maxWidth="300px" textOverflow="wrap">
 							{task.status === true ? (
 								<Button
@@ -99,9 +101,10 @@ export default function ListsList() {
 										toggle(index);
 									}}
 									width="300px"
+									// height="70px"
 									opacity=".3"
 									isActive={true}
-									overflow="hidden"
+									overflow="scroll"
 								>
 									{task.title} (Completed)
 								</Button>
@@ -109,6 +112,7 @@ export default function ListsList() {
 								<Button
 									id={task.id}
 									width="300px"
+									// height="70px"
 									onClick={() => {
 										setSelectedTask(task);
 										setComments(task.comments);
@@ -138,19 +142,21 @@ export default function ListsList() {
 							<DeleteIcon />
 						</Button>
 					</Flex>
-					{selectedTask.id == task.id && (
-						<Collapse in={isCollapse}>
-							<Box>{task.desc}</Box>
-						</Collapse>
-					)}
-				</GridItem>
+					<Flex>
+						{selectedTask.id == task.id && (
+							<Collapse in={isCollapse}>
+								<Box>{task.desc}</Box>
+							</Collapse>
+						)}
+					</Flex>
+					{/* </GridItem> */}
+				</Container>
 			);
 		});
 
 	const commentComponents =
 		comments &&
 		comments.map((comment) => {
-			// console.log("COMMENT IN commentComponents!!", comment)
 			return (
 				<Flex>
 					<Text id={comment.id}>{comment.text}</Text>
@@ -174,22 +180,29 @@ export default function ListsList() {
 		});
 
 	return (
-		<Grid
-			justifyContent="center"
-			width="100%"
-			gridAutoColumns="auto"
-			gridTemplateColumns="repeat(3, 1fr)"
-		>
-			<Flex flexFlow="column wrap" align="space-between" width="30vh">
-				<Text>Lists:</Text>
+		// <Grid
+		// 	justifyContent="center"
+		// 	width="100%"
+		// 	gridAutoColumns="auto"
+		// 	gridTemplateColumns="repeat(3, 1fr)"
+		// >
+		<Flex m={4} justify="center">
+			<Flex flexFlow="column wrap" align="center" width="30vh" m={8}>
 				<NewListModal />
+				<Text fontSize="xl" as="u">
+					Lists:
+				</Text>
 				{listComponents}
 			</Flex>
-			<GridItem width="50vh" alignContent="center">
-				<Text>Tasks:</Text>
+			{/* <GridItem width="50vh" alignContent="center"> */}
+			<Flex flexDirection="column" m={8} align="center">
 				<NewTaskModal />
+				<Text fontSize="xl" as="u">
+					Tasks:
+				</Text>
 				<Container>{taskComponents}</Container>
-			</GridItem>
+			</Flex>
+			{/* </GridItem> */}
 			<Flex direction="column" width="30vh">
 				{isCollapse && (
 					<>
@@ -199,6 +212,7 @@ export default function ListsList() {
 					</>
 				)}
 			</Flex>
-		</Grid>
+		</Flex>
+		// </Grid>
 	);
 }

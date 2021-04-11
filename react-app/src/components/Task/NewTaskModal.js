@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
-import { Container } from "@chakra-ui/layout";
+import { Container, Flex } from "@chakra-ui/layout";
 import {
 	Modal,
 	ModalBody,
@@ -32,7 +32,7 @@ function NewTaskModal() {
 	const createNewTaskHandler = useList().createNewTaskHandler;
 
 	return (
-		<Container>
+		<Flex>
 			<Button onClick={onOpen}>Create New Task</Button>
 			<Modal isOpen={isOpen} onClose={onClose} size="xl">
 				<ModalOverlay />
@@ -76,7 +76,7 @@ function NewTaskModal() {
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
-		</Container>
+		</Flex>
 	);
 }
 
