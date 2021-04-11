@@ -95,6 +95,7 @@ export default function ListsList() {
 								<Button
 									id={task.id}
 									onClick={() => {
+										console.log("Task component: ", task);
 										setSelectedTask(task);
 										setComments(task.comments);
 										// onToggle();
@@ -104,9 +105,9 @@ export default function ListsList() {
 									// height="70px"
 									opacity=".3"
 									isActive={true}
-									overflow="scroll"
+									// overflow="scroll"
 								>
-									{task.title} (Completed)
+									<Flex width="100%">{task.title} (Completed)</Flex>
 								</Button>
 							) : (
 								<Button
@@ -119,9 +120,17 @@ export default function ListsList() {
 										// onToggle();
 										toggle(index);
 									}}
-									overflow="break-word"
+
+									// overflow="break-word"
 								>
-									{task.title}
+									<Flex
+										width="100%"
+										flexWrap="wrap"
+										flexDir="row"
+										overflowWrap="break-word"
+									>
+										{task.title}
+									</Flex>
 								</Button>
 							)}
 						</Flex>
@@ -171,8 +180,8 @@ export default function ListsList() {
 							onClick={() => {
 								deleteComment(comment.id);
 							}}
-							icon={<DeleteIcon/>}						/>
-
+							icon={<DeleteIcon />}
+						/>
 					</ButtonGroup>
 				</Flex>
 			);
