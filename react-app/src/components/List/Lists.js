@@ -11,7 +11,7 @@ import EditListTitleModal from "./EditListTitleModal";
 //Chakra
 import { Button } from "@chakra-ui/button";
 import { Box, Container, Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
-import { Collapse } from "@chakra-ui/react";
+import { Collapse, FormControl } from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useDisclosure } from "@chakra-ui/hooks";
 
@@ -56,25 +56,27 @@ export default function ListsList() {
 		lists.map((loadedList) => {
 			return (
 				<GridItem>
-					<Button
-						id={loadedList.id}
-						// isActive="true"
-						outline="none"
-						onClick={() => {
-							setSelectedList(loadedList);
-							setTasks(loadedList.tasks); //sets list tasks
-						}}
-					>
-						{loadedList.title}
-					</Button>
-					<EditListTitleModal />
-					<Button
-						onClick={() => {
-							deleteList(loadedList.id);
-						}}
-					>
-						<DeleteIcon />
-					</Button>
+					<Flex>
+						<Button
+							id={loadedList.id}
+							// isActive="true"
+							outline="none"
+							onClick={() => {
+								setSelectedList(loadedList);
+								setTasks(loadedList.tasks); //sets list tasks
+							}}
+						>
+							{loadedList.title}
+						</Button>
+						<EditListTitleModal />
+						<Button
+							onClick={() => {
+								deleteList(loadedList.id);
+							}}
+						>
+							<DeleteIcon />
+						</Button>
+					</Flex>
 				</GridItem>
 			);
 		});
@@ -85,56 +87,62 @@ export default function ListsList() {
 			// console.log("task", task, "task status", task.status);
 			return (
 				<GridItem>
-					<Container>
-						{task.status === true ? (
-							<Button
-								id={task.id}
-								onClick={() => {
-									setSelectedTask(task);
-									setComments(task.comments);
-									// onToggle();
-									toggle(index);
-								}}
-								opacity=".3"
-								isActive={true}
-							>
-								{task.title} (Completed)
-							</Button>
-						) : (
-							<Button
-								id={task.id}
-								onClick={() => {
-									setSelectedTask(task);
-									setComments(task.comments);
-									// onToggle();
-									toggle(index);
-								}}
-							>
-								{task.title}
-							</Button>
-						)}
-						{selectedTask.id == task.id && (
-							<Collapse in={isCollapse}>
-								<Box>{task.desc}</Box>
-							</Collapse>
-						)}
-					</Container>
-					<Button
-						onClick={() => {
-							setSelectedTask(task);
-							markTaskAsComplete(task.id);
-						}}
-						// add for on hover - "Mark task as complete"
-					>
-						<CheckIcon />
-					</Button>
-					<Button
-						onClick={() => {
-							deleteTask(task.id);
-						}}
-					>
-						<DeleteIcon />
-					</Button>
+					<Flex>
+						<Flex maxWidth="300px" textOverflow="wrap">
+							{task.status === true ? (
+								<Button
+									id={task.id}
+									onClick={() => {
+										setSelectedTask(task);
+										setComments(task.comments);
+										// onToggle();
+										toggle(index);
+									}}
+									width="300px"
+									opacity=".3"
+									isActive={true}
+									overflow="hidden"
+								>
+									{task.title} (Completed)
+								</Button>
+							) : (
+								<Button
+									id={task.id}
+									width="300px"
+									onClick={() => {
+										setSelectedTask(task);
+										setComments(task.comments);
+										// onToggle();
+										toggle(index);
+									}}
+									overflow="break-word"
+								>
+									{task.title}
+								</Button>
+							)}
+						</Flex>
+						<Button
+							onClick={() => {
+								setSelectedTask(task);
+								markTaskAsComplete(task.id);
+							}}
+							// add for on hover - "Mark task as complete"
+						>
+							<CheckIcon />
+						</Button>
+						<Button
+							onClick={() => {
+								deleteTask(task.id);
+							}}
+						>
+							<DeleteIcon />
+						</Button>
+					</Flex>
+					{selectedTask.id == task.id && (
+						<Collapse in={isCollapse}>
+							<Box>{task.desc}</Box>
+						</Collapse>
+					)}
 				</GridItem>
 			);
 		});
