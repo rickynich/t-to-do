@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 //components
-import TaskComponents from "../Task/Tasks";
 import NewListModal from "./NewListModal";
 import NewTaskModal from "../Task/NewTaskModal";
 import NewCommentModal from "../Comments/NewCommentModal";
@@ -10,9 +9,9 @@ import EditListTitleModal from "./EditListTitleModal";
 
 //Chakra
 import { Button, ButtonGroup, IconButton } from "@chakra-ui/button";
-import { Box, Container, Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
-import { Collapse, FormControl } from "@chakra-ui/react";
-import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { Box, Container, Flex, Text } from "@chakra-ui/layout";
+import { AlertDialog, Collapse, FormControl, position, useToast } from "@chakra-ui/react";
+import { CheckIcon, DeleteIcon } from "@chakra-ui/icons";
 
 //context
 import { useList } from "../Context/ListContext";
@@ -24,6 +23,7 @@ export default function ListsList() {
 	const setTasks = useList().setTasks;
 	const comments = useList().comments;
 	const setComments = useList().setComments;
+	const selectedList = useList().selectedList;
 	const setSelectedList = useList().setSelectedList;
 	const selectedTask = useList().selectedTask;
 	const setSelectedTask = useList().setSelectedTask;
@@ -34,6 +34,9 @@ export default function ListsList() {
 	const selectedComment = useList().selectedComment;
 	const setSelectedComment = useList().setSelectedComment;
 	const [isCollapse, setCollapse] = useState(false);
+
+	//toast for no list select
+	const toast = useToast();
 
 	if (!lists) return null;
 
@@ -52,12 +55,10 @@ export default function ListsList() {
 						<Button
 							id={loadedList.id}
 							width="150px"
-							
 							outline="none"
 							onClick={() => {
 								setSelectedList(loadedList);
 								setTasks(loadedList.tasks); //sets list tasks
-								
 							}}
 						>
 							{loadedList.title}
@@ -143,7 +144,7 @@ export default function ListsList() {
 							</ButtonGroup>
 						</Flex>
 					</Flex>
-					<Flex width="100%" >
+					<Flex width="100%">
 						{selectedTask.id == task.id && (
 							<Collapse in={isCollapse}>
 								<Box maxWidth="100%" m={3} fontSize="15px">
@@ -192,14 +193,43 @@ export default function ListsList() {
 				</Text>
 				{listComponents}
 			</Flex>
-			<Flex flexDirection="column" m={8} align="center">
+			<Flex
+				flexDirection="column"
+				m={8}
+				align="center"
+				onClick={() => {
+					console.log("No list is selected", selectedList);
+					selectedList.title === "default list" &&
+						toast({
+							title: "No list selected yet",
+							description: "Please select a list before making changes",
+							position: "top",
+							isClosable: true,
+						});
+				}}
+			>
 				<NewTaskModal />
 				<Text fontSize="xl" as="u">
 					Tasks:
 				</Text>
 				<Container>{taskComponents}</Container>
 			</Flex>
-			<Flex direction="column" width="30vh" mt={8} align="center">
+			<Flex
+				direction="column"
+				width="30vh"
+				mt={8}
+				align="center"
+				onClick={() => {
+					console.log("No list is selected", selectedList);
+					selectedList.title === "default list" &&
+						toast({
+							title: "No list selected yet",
+							description: "Please select a list before making changes",
+							position: "top",
+							isClosable: true,
+						});
+				}}
+			>
 				{isCollapse && (
 					<>
 						<NewCommentModal />

@@ -32,7 +32,7 @@ function EditCommentModal(props) {
 
 	const updateNewCommentText = useList().updateNewCommentText;
 	const editComment = useList().editComment;
-	// const editCommentHandler = useList().editCommentHandler;
+	
 	const loadedComment = props.comment;
 
 	return (
@@ -49,7 +49,7 @@ function EditCommentModal(props) {
 							<Input
 								type="text"
 								name="text"
-								placeholder="Comment text"
+								placeholder={loadedComment.text}
 								value={newCommentText}
 								onChange={updateNewCommentText}
 							/>

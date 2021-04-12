@@ -52,9 +52,9 @@ export function ListProvider({ children }) {
 	const [lists, setLists] = useState([]);
 	const [tasks, setTasks] = useState(["default task"]);
 	const [comments, setComments] = useState(["default comment"]);
-	const [selectedList, setSelectedList] = useState([
+	const [selectedList, setSelectedList] = useState(
 		{ title: "default list", tasks: [{ title: "default task" }] },
-	]);
+	);
 	const [selectedTask, setSelectedTask] = useState([]);
 	const [selectedComment, setSelectedComment] = useState({});
 	const [newListTitle, setNewListTitle] = useState();
