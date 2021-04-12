@@ -33,7 +33,7 @@ function NewTaskModal() {
 
 	return (
 		<Flex>
-			<Button onClick={onOpen}>Create New Task</Button>
+			<Button onClick={onOpen}>Create Task</Button>
 			<Modal isOpen={isOpen} onClose={onClose} size="xl">
 				<ModalOverlay />
 				<ModalContent>

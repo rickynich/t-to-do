@@ -25,7 +25,7 @@ function NewListModal() {
     
 	return (
 		<>
-			<Button onClick={onOpen}>Create New List</Button>
+			<Button onClick={onOpen}>Create List</Button>
 
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />

@@ -96,10 +96,11 @@ export default function ListsList() {
 									lineHeight="1.2"
 									border="1px"
 									px="8px"
+									p={2}
 									borderRadius={2}
 									fontSize="16px"
 									fontWeight="semibold"
-									bg="gray.50"
+									bg="#f0ffff"
 									borderColor="#ccd0d5"
 									color="#4b4f56"
 									_hover={{ bg: "#ebedf0" }}
@@ -128,6 +129,7 @@ export default function ListsList() {
 									}}
 									icon={<CheckIcon />}
 									borderRadius={2}
+									height="100%"
 								></IconButton>
 								<IconButton
 									onClick={() => {
@@ -136,6 +138,7 @@ export default function ListsList() {
 									_hover={{ bg: "red.100" }}
 									icon={<DeleteIcon />}
 									borderRadius={2}
+									height="100%"
 								></IconButton>
 							</ButtonGroup>
 						</Flex>

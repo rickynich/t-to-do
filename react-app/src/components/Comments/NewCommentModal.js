@@ -31,7 +31,7 @@ function NewCommentModal() {
 
 	return (
 		<Container>
-			<Button onClick={onOpen}>Create New Comment</Button>
+			<Button onClick={onOpen}>Create Comment</Button>
 			<Modal isOpen={isOpen} onClose={onClose} size="xl">
 				<ModalOverlay />
 				<ModalContent>
