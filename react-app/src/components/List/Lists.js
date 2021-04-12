@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 //components
 import NewListModal from "./NewListModal";
@@ -10,7 +10,7 @@ import EditListTitleModal from "./EditListTitleModal";
 //Chakra
 import { Button, ButtonGroup, IconButton } from "@chakra-ui/button";
 import { Box, Container, Flex, Text } from "@chakra-ui/layout";
-import { AlertDialog, Collapse, FormControl, position, useToast } from "@chakra-ui/react";
+import { Collapse, FormControl, useToast } from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon } from "@chakra-ui/icons";
 
 //context
@@ -79,6 +79,7 @@ export default function ListsList() {
 	const taskComponents =
 		tasks &&
 		tasks.map((task, index) => {
+			// console.log(task);
 			return (
 				<Container dir="column">
 					<Flex m={1}>
@@ -117,7 +118,7 @@ export default function ListsList() {
 								>
 									{task.status === true ? (
 										<Flex width="100%" opacity=".3">
-											{task.title} (Completed)
+											{task.title}
 										</Flex>
 									) : (
 										<Flex width="100%">{task.title}</Flex>
@@ -147,10 +148,15 @@ export default function ListsList() {
 					<Flex width="100%">
 						{selectedTask.id == task.id && (
 							<Collapse in={isCollapse}>
-								<Box maxWidth="100%" m={3} fontSize="15px">
+								<Box maxWidth="100%" m={2} fontSize="15px">
+									<Text as="u">Status:</Text>
+									{"\n"}
+									{task.status && <Text>Completed</Text>}
+									{!task.status && <Text>Incomplete</Text>}
+
 									<Text as="u">Description:</Text>
 									{"\n"}
-									{task.desc}
+									<Text>{task.desc}</Text>
 								</Box>
 							</Collapse>
 						)}
@@ -163,8 +169,21 @@ export default function ListsList() {
 		comments &&
 		comments.map((comment) => {
 			return (
-				<Flex flexDir="column" fontSize="15px">
-					<Text id={comment.id}>{comment.text}</Text>
+				<Flex
+					flexDir="column"
+					fontSize="15px"
+					borderBottom="1px"
+					
+				>
+					<Text
+						id={comment.id}
+						// border="thin solid #f0ffff"
+						// borderRadius={2}
+						pt={1}
+						m={2}
+					>
+						{comment.text}
+					</Text>
 					<ButtonGroup isAttached>
 						<EditCommentModal
 							comment={comment}
@@ -172,21 +191,25 @@ export default function ListsList() {
 								setSelectedComment(comment);
 							}}
 						/>
-						<IconButton
+						<Button
 							onClick={() => {
 								deleteComment(comment.id);
 							}}
-							_hover={{ bg: "red.100" }}
-							icon={<DeleteIcon />}
-						/>
+							// _hover={{ bg: "red.100" }}
+							// icon={<DeleteIcon />}
+							variant="link"
+							fontSize="14px"
+						>
+							Delete
+						</Button>
 					</ButtonGroup>
 				</Flex>
 			);
 		});
 
 	return (
-		<Flex m={4} justify="center">
-			<Flex flexFlow="column wrap" align="center" width="30vh" m={8}>
+		<Flex m={4} justify="center" height="100vh">
+			<Flex flexDir="column" align="center" width="30vh" mt={8}>
 				<NewListModal />
 				<Text fontSize="xl" as="u">
 					Lists:
@@ -196,9 +219,9 @@ export default function ListsList() {
 			<Flex
 				flexDirection="column"
 				m={8}
+				mr={0}
 				align="center"
 				onClick={() => {
-					console.log("No list is selected", selectedList);
 					selectedList.title === "default list" &&
 						toast({
 							title: "No list selected yet",
@@ -220,7 +243,6 @@ export default function ListsList() {
 				mt={8}
 				align="center"
 				onClick={() => {
-					console.log("No list is selected", selectedList);
 					selectedList.title === "default list" &&
 						toast({
 							title: "No list selected yet",

@@ -32,12 +32,12 @@ function EditCommentModal(props) {
 
 	const updateNewCommentText = useList().updateNewCommentText;
 	const editComment = useList().editComment;
-	
+
 	const loadedComment = props.comment;
 
 	return (
 		<Flex>
-			<IconButton onClick={onOpen} icon={<EditIcon/>} />
+			<Button onClick={onOpen} variant="link" fontSize="14px">Edit</Button>
 			<Modal isOpen={isOpen} onClose={onClose} size="xl">
 				<ModalOverlay />
 				<ModalContent>
