@@ -7,9 +7,8 @@
    git clone https://github.com/rickynich/t-to-do.git
    ```
 
-2. Install dependencies
+2. Install dependencies:
 
-    Cd to the backend directory:
     ```bash
     cd backend 
     ```
@@ -17,7 +16,7 @@
     pipenv install --dev -r dev-requirements.txt && pipenv install -r requirements.txt
     ```
 
-3. Create a **.env** file based on the .env.example file
+3. Create a **.env** file based on the **.env.example** file
 
 4. Setup your PostgreSQL user, password and database and make sure it matches your **.env** file:
 
