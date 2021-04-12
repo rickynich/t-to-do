@@ -52,11 +52,12 @@ export default function ListsList() {
 						<Button
 							id={loadedList.id}
 							width="150px"
-							// isActive="true"
+							
 							outline="none"
 							onClick={() => {
 								setSelectedList(loadedList);
 								setTasks(loadedList.tasks); //sets list tasks
+								
 							}}
 						>
 							{loadedList.title}
@@ -80,69 +81,73 @@ export default function ListsList() {
 			return (
 				<Container dir="column">
 					<Flex m={1}>
-						<Flex maxWidth="300px">
-							<Box
-								id={task.id}
-								width="300px"
-								onClick={() => {
-									setSelectedTask(task);
-									setComments(task.comments);
-									// onToggle();
-									toggle(index);
-								}}
-								as="button"
-								height="100%"
-								lineHeight="1.2"
-								// transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
-								border="1px"
-								px="8px"
-								borderRadius="4px"
-								fontSize="14px"
-								fontWeight="semibold"
-								bg="#f5f6f7"
-								borderColor="#ccd0d5"
-								color="#4b4f56"
-								_hover={{ bg: "#ebedf0" }}
-								_active={{
-									bg: "#dddfe2",
-									transform: "scale(0.98)",
-									borderColor: "#bec3c9",
-								}}
-								_focus={{
-									boxShadow:
-										"0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)",
-								}}
-							>
-								{task.status === true ? (
-									<Flex width="100%" opacity=".3">
-										{task.title} (Completed)
-									</Flex>
-								) : (
-									<Flex width="100%">{task.title}</Flex>
-								)}
-							</Box>
+						<Flex maxWidth="400px">
+							<ButtonGroup isAttached variant="outline">
+								<Box
+									id={task.id}
+									width="300px"
+									onClick={() => {
+										setSelectedTask(task);
+										setComments(task.comments);
+										toggle(index);
+									}}
+									as="button"
+									height="100%"
+									lineHeight="1.2"
+									border="1px"
+									px="8px"
+									borderRadius={2}
+									fontSize="16px"
+									fontWeight="semibold"
+									bg="gray.50"
+									borderColor="#ccd0d5"
+									color="#4b4f56"
+									_hover={{ bg: "#ebedf0" }}
+									_active={{
+										bg: "#dddfe2",
+										transform: "scale(0.98)",
+										borderColor: "#bec3c9",
+									}}
+									_focus={{
+										boxShadow:
+											"0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)",
+									}}
+								>
+									{task.status === true ? (
+										<Flex width="100%" opacity=".3">
+											{task.title} (Completed)
+										</Flex>
+									) : (
+										<Flex width="100%">{task.title}</Flex>
+									)}
+								</Box>
+								<IconButton
+									onClick={() => {
+										setSelectedTask(task);
+										markTaskAsComplete(task.id);
+									}}
+									icon={<CheckIcon />}
+									borderRadius={2}
+								></IconButton>
+								<IconButton
+									onClick={() => {
+										deleteTask(task.id);
+									}}
+									_hover={{ bg: "red.100" }}
+									icon={<DeleteIcon />}
+									borderRadius={2}
+								></IconButton>
+							</ButtonGroup>
 						</Flex>
-						<Button
-							onClick={() => {
-								setSelectedTask(task);
-								markTaskAsComplete(task.id);
-							}}
-							// add for on hover - "Mark task as complete"
-						>
-							<CheckIcon />
-						</Button>
-						<Button
-							onClick={() => {
-								deleteTask(task.id);
-							}}
-						>
-							<DeleteIcon />
-						</Button>
 					</Flex>
-					<Flex>
+					<Flex width="100%" >
 						{selectedTask.id == task.id && (
 							<Collapse in={isCollapse}>
-								<Box>{task.desc}</Box>
+								<Box maxWidth="100%" m={3} fontSize="15px">
+									<Text as="u">Description:</Text>
+									{"\n"}
+									{task.desc}
+								</Box>
 							</Collapse>
 						)}
 					</Flex>
@@ -154,7 +159,7 @@ export default function ListsList() {
 		comments &&
 		comments.map((comment) => {
 			return (
-				<Flex flexDir="column">
+				<Flex flexDir="column" fontSize="15px">
 					<Text id={comment.id}>{comment.text}</Text>
 					<ButtonGroup isAttached>
 						<EditCommentModal
@@ -167,6 +172,7 @@ export default function ListsList() {
 							onClick={() => {
 								deleteComment(comment.id);
 							}}
+							_hover={{ bg: "red.100" }}
 							icon={<DeleteIcon />}
 						/>
 					</ButtonGroup>
@@ -175,12 +181,6 @@ export default function ListsList() {
 		});
 
 	return (
-		// <Grid
-		// 	justifyContent="center"
-		// 	width="100%"
-		// 	gridAutoColumns="auto"
-		// 	gridTemplateColumns="repeat(3, 1fr)"
-		// >
 		<Flex m={4} justify="center">
 			<Flex flexFlow="column wrap" align="center" width="30vh" m={8}>
 				<NewListModal />
@@ -189,7 +189,6 @@ export default function ListsList() {
 				</Text>
 				{listComponents}
 			</Flex>
-			{/* <GridItem width="50vh" alignContent="center"> */}
 			<Flex flexDirection="column" m={8} align="center">
 				<NewTaskModal />
 				<Text fontSize="xl" as="u">
@@ -197,7 +196,6 @@ export default function ListsList() {
 				</Text>
 				<Container>{taskComponents}</Container>
 			</Flex>
-			{/* </GridItem> */}
 			<Flex direction="column" width="30vh" mt={8} align="center">
 				{isCollapse && (
 					<>
@@ -210,6 +208,5 @@ export default function ListsList() {
 				)}
 			</Flex>
 		</Flex>
-		// </Grid>
 	);
 }

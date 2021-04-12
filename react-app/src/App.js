@@ -31,7 +31,7 @@ function App() {
 					</Route>
 					<Route path="/" exact={true}>
 						<Flex direction="column" justifyContent="center" alignContent="center" p={6}>
-							<Text align="center" fontSize="3xl" m={6} fontWeight="bold">Welcome to your To-Do List</Text>
+							<Text align="center" fontSize="3xl" mt={4} fontWeight="bold">Welcome to your To-Do List</Text>
 							<Lists />
 						</Flex>
 					</Route>
