@@ -13,14 +13,11 @@ import { Button, ButtonGroup, IconButton } from "@chakra-ui/button";
 import { Box, Container, Flex, Grid, GridItem, Text } from "@chakra-ui/layout";
 import { Collapse, FormControl } from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import { useDisclosure } from "@chakra-ui/hooks";
 
 //context
 import { useList } from "../Context/ListContext";
 
 export default function ListsList() {
-	// const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
-
 	//uses ListContext:
 	const lists = useList().lists;
 	const tasks = useList().tasks;
@@ -80,54 +77,50 @@ export default function ListsList() {
 	const taskComponents =
 		tasks &&
 		tasks.map((task, index) => {
-			// console.log("task", task, "task status", task.status);
 			return (
-				// <GridItem>
 				<Container dir="column">
 					<Flex m={1}>
 						<Flex maxWidth="300px">
-							{task.status === true ? (
-								<Button
-									id={task.id}
-									onClick={() => {
-										console.log("Task component: ", task);
-										setSelectedTask(task);
-										setComments(task.comments);
-										// onToggle();
-										toggle(index);
-									}}
-									width="300px"
-									// height="70px"
-									opacity=".3"
-									isActive={true}
-									// overflow="scroll"
-								>
-									<Flex width="100%">{task.title} (Completed)</Flex>
-								</Button>
-							) : (
-								<Button
-									id={task.id}
-										width="300px"
-									// height="70px"
-									onClick={() => {
-										setSelectedTask(task);
-										setComments(task.comments);
-										// onToggle();
-										toggle(index);
-									}}
-
-									// overflow="break-word"
-								>
-									<Flex
-										width="100%"
-										flexWrap="wrap"
-										flexDir="row"
-										overflowWrap="break-word"
-									>
-										{task.title}
+							<Box
+								id={task.id}
+								width="300px"
+								onClick={() => {
+									setSelectedTask(task);
+									setComments(task.comments);
+									// onToggle();
+									toggle(index);
+								}}
+								as="button"
+								height="100%"
+								lineHeight="1.2"
+								// transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
+								border="1px"
+								px="8px"
+								borderRadius="4px"
+								fontSize="14px"
+								fontWeight="semibold"
+								bg="#f5f6f7"
+								borderColor="#ccd0d5"
+								color="#4b4f56"
+								_hover={{ bg: "#ebedf0" }}
+								_active={{
+									bg: "#dddfe2",
+									transform: "scale(0.98)",
+									borderColor: "#bec3c9",
+								}}
+								_focus={{
+									boxShadow:
+										"0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)",
+								}}
+							>
+								{task.status === true ? (
+									<Flex width="100%" opacity=".3">
+										{task.title} (Completed)
 									</Flex>
-								</Button>
-							)}
+								) : (
+									<Flex width="100%">{task.title}</Flex>
+								)}
+							</Box>
 						</Flex>
 						<Button
 							onClick={() => {
@@ -153,7 +146,6 @@ export default function ListsList() {
 							</Collapse>
 						)}
 					</Flex>
-					{/* </GridItem> */}
 				</Container>
 			);
 		});
