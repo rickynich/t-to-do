@@ -9,9 +9,13 @@
 
 2. Install dependencies
 
-      ```bash
-      pipenv install --dev -r dev-requirements.txt && pipenv install -r requirements.txt
-      ```
+    Cd to the backend directory:
+    ```bash
+    cd backend 
+    ```
+    ```bash
+    pipenv install --dev -r dev-requirements.txt && pipenv install -r requirements.txt
+    ```
 
 3. Create a **.env** file based on the .env.example file
 
