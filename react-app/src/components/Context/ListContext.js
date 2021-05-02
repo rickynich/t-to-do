@@ -284,13 +284,6 @@ export function ListProvider({ children }) {
 	};
 
 
-	// const values = {
-	// 	lists,
-	// 	completeTask,
-	// 	createNewList,
-	// 	deleteList
-	// }
-
 	return (
 		<ListContext.Provider
 			value={{

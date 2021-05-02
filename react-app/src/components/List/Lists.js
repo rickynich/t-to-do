@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //components
 import NewListModal from "./NewListModal";
@@ -63,7 +63,7 @@ export default function ListsList() {
 						>
 							{loadedList.title}
 						</Button>
-						<EditListTitleModal />
+						<EditListTitleModal listTitle={loadedList.title}/>
 						<Button
 							onClick={() => {
 								deleteList(loadedList.id);
@@ -153,7 +153,6 @@ export default function ListsList() {
 									{"\n"}
 									{task.status && <Text>Completed</Text>}
 									{!task.status && <Text>Incomplete</Text>}
-
 									<Text as="u">Description:</Text>
 									{"\n"}
 									<Text>{task.desc}</Text>
@@ -235,7 +234,7 @@ export default function ListsList() {
 				<Text fontSize="xl" as="u">
 					Tasks:
 				</Text>
-				<Container>{taskComponents}</Container>
+				<Container minWidth="35vw">{taskComponents}</Container>
 			</Flex>
 			<Flex
 				direction="column"

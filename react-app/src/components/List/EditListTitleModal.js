@@ -25,11 +25,12 @@ import {
 //context
 import { useList } from "../Context/ListContext";
 
-function EditListTitleModal() {
+function EditListTitleModal(props) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const editListTitle = useList().editListTitle;
 	const newListTitle = useList().newListTitle;
 	const updateNewListTitle = useList().updateNewListTitle;
+	const {listTitle} = props
 
 	return (
 		<>
@@ -48,16 +49,22 @@ function EditListTitleModal() {
 							<Input
 								type="text"
 								name="title"
-								placeholder="List title"
+								placeholder={listTitle}
 								value={newListTitle}
 								onChange={updateNewListTitle}
+								errorBorderColor="red.300"
 							/>
 						</FormControl>
 					</ModalBody>
 					<ModalFooter>
 						<Popover>
 							<PopoverTrigger>
-								<Button onClick={() => { editListTitle(newListTitle) }} mr={3}>
+								<Button
+									onClick={() => {
+										editListTitle(newListTitle);
+									}}
+									mr={3}
+								>
 									Submit change
 								</Button>
 							</PopoverTrigger>
