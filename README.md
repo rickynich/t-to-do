@@ -1,4 +1,5 @@
-## A simple to-do app with data persistence. 
+T-To-Do:
+A simple to-do app with data persistence. 
 
 ## Getting started
 
