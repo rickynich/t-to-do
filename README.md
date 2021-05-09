@@ -1,3 +1,4 @@
+## A simple to-do app with data persistence. 
 
 ## Getting started
 
